@@ -11,10 +11,10 @@ use App\Http\Controllers\Frontend\TransactionController;
 // PUBLIC ROUTES
 // ─────────────────────────────────────────────
 
+use App\Http\Controllers\Frontend\HomeController;
+
 // Home / Dashboard
-Route::get('/', function () {
-    return view('frontend.dashboard');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Shop Catalog
 Route::get('/shop', [ProductController::class, 'index'])->name('shop');

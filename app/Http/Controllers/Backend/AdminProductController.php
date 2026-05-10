@@ -33,8 +33,9 @@ class AdminProductController extends Controller
         $validated['slug'] = Str::slug($validated['name']);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('products', 'public');
+            $validated['thumbnail'] = $request->file('image')->store('products', 'public');
         }
+        unset($validated['image']);
 
         Product::create($validated);
 
@@ -59,8 +60,9 @@ class AdminProductController extends Controller
         $validated['slug'] = Str::slug($validated['name']);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('products', 'public');
+            $validated['thumbnail'] = $request->file('image')->store('products', 'public');
         }
+        unset($validated['image']);
 
         $product->update($validated);
 

@@ -39,9 +39,9 @@
                     
                     <div class="mb-3">
                         <label class="form-label" for="image">Product Image (Leave blank to keep current)</label>
-                        @if($product->image)
+                        @if($product->thumbnail)
                             <div class="mb-2">
-                                <img src="{{ asset('storage/' . $product->image) }}" alt="Current Image" width="100" class="rounded">
+                                <img src="{{ asset('storage/' . $product->thumbnail) }}" alt="Current Image" width="100" class="rounded">
                             </div>
                         @endif
                         <input class="form-control @error('image') is-invalid @enderror" type="file" id="image" name="image" accept="image/*" />

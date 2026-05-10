@@ -30,8 +30,8 @@
                         @forelse($products as $product)
                         <tr>
                             <td>
-                                @if($product->image)
-                                    <img src="{{ asset('storage/' . $product->image) }}" alt="Product" class="rounded" width="50">
+                                @if($product->thumbnail)
+                                    <img src="{{ asset('storage/' . $product->thumbnail) }}" alt="Product" class="rounded" width="50">
                                 @else
                                     <span class="badge bg-label-secondary">No Image</span>
                                 @endif

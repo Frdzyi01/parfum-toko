@@ -216,8 +216,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
-                                                    <h6 class="mb-0">John Doe</h6>
-                                                    <small class="text-body-secondary">Admin</small>
+                                                    <h6 class="mb-0">{{ auth()->user()->name ?? 'Admin' }}</h6>
+                                                    <small class="text-body-secondary">{{ ucfirst(auth()->user()->role ?? 'Admin') }}</small>
                                                 </div>
                                             </div>
                                         </a>
@@ -234,9 +234,12 @@
                                         <div class="dropdown-divider my-1"></div>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="javascript:void(0);">
-                                            <i class="icon-base bx bx-power-off icon-md me-3"></i><span>Log Out</span>
-                                        </a>
+                                        <form method="POST" action="{{ route('admin.logout') }}">
+                                            @csrf
+                                            <a class="dropdown-item" href="route('admin.logout')" onclick="event.preventDefault(); this.closest('form').submit();">
+                                                <i class="icon-base bx bx-power-off icon-md me-3"></i><span>Log Out</span>
+                                            </a>
+                                        </form>
                                     </li>
                                 </ul>
                             </li>
