@@ -67,7 +67,7 @@
                                 </a>
                             @endguest
                             @auth
-                                <button type="submit" class="cart-btn" style="border:none;cursor:pointer;background:none;">
+                                <button type="submit" class="cart-btn" style="border:none;cursor:pointer;background:none; color:black;">
                                     <span class="icon_bag_alt"></span> Add to cart
                                 </button>
                             @endauth
