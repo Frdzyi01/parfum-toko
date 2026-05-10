@@ -52,6 +52,8 @@ Route::middleware('auth')->group(function () {
 // ─────────────────────────────────────────────
 use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\Backend\AdminProductController;
+use App\Http\Controllers\Backend\AdminTransactionController;
 
 Route::prefix('admin')->group(function () {
     Route::get('/login', [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
@@ -60,5 +62,11 @@ Route::prefix('admin')->group(function () {
 
     Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+
+        // Catalog Management
+        Route::resource('products', AdminProductController::class)->names('admin.products');
+
+        // Order/Transaction Management
+        Route::resource('transactions', AdminTransactionController::class)->only(['index', 'show', 'update'])->names('admin.transactions');
     });
 });

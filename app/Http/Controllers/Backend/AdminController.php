@@ -3,12 +3,19 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
     public function index()
     {
-        return view('backend.dashboard');
+        $totalRevenue = Transaction::whereIn('status', ['paid', 'completed'])->sum('total_amount');
+        $totalOrders = Transaction::count();
+        $totalProducts = Product::count();
+        $recentTransactions = Transaction::with('user')->latest()->take(5)->get();
+
+        return view('backend.dashboard', compact('totalRevenue', 'totalOrders', 'totalProducts', 'recentTransactions'));
     }
 }
