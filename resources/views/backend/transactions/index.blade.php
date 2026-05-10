@@ -29,15 +29,14 @@
                     <tbody class="table-border-bottom-0">
                         @forelse($transactions as $transaction)
                         <tr>
-                            <td><strong>{{ $transaction->invoice }}</strong></td>
+                            <td><strong>{{ $transaction->invoice_number }}</strong></td>
                             <td>{{ $transaction->user->name ?? 'Guest' }}</td>
-                            <td>Rp {{ number_format($transaction->total_amount, 0, ',', '.') }}</td>
+                            <td>Rp {{ number_format($transaction->total, 0, ',', '.') }}</td>
                             <td>
                                 @php
                                     $statusClass = [
                                         'pending' => 'bg-label-warning',
-                                        'paid' => 'bg-label-info',
-                                        'shipped' => 'bg-label-primary',
+                                        'processing' => 'bg-label-info',
                                         'completed' => 'bg-label-success',
                                         'cancelled' => 'bg-label-danger'
                                     ];

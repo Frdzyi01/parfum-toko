@@ -5,7 +5,7 @@
     <div class="col-md-8 mx-auto">
         <div class="card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Order Detail: {{ $transaction->invoice }}</h5>
+                <h5 class="mb-0">Order Detail: {{ $transaction->invoice_number }}</h5>
                 <a href="{{ route('admin.transactions.index') }}" class="btn btn-sm btn-secondary">Back to Orders</a>
             </div>
             <div class="card-body">
@@ -29,8 +29,7 @@
                             @method('PUT')
                             <select name="status" class="form-select form-select-sm me-2" style="width: auto;">
                                 <option value="pending" {{ $transaction->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                <option value="paid" {{ $transaction->status == 'paid' ? 'selected' : '' }}>Paid</option>
-                                <option value="shipped" {{ $transaction->status == 'shipped' ? 'selected' : '' }}>Shipped</option>
+                                <option value="processing" {{ $transaction->status == 'processing' ? 'selected' : '' }}>Processing</option>
                                 <option value="completed" {{ $transaction->status == 'completed' ? 'selected' : '' }}>Completed</option>
                                 <option value="cancelled" {{ $transaction->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                             </select>
@@ -62,7 +61,7 @@
                         <tfoot class="table-light">
                             <tr>
                                 <th colspan="3" class="text-end">Total Amount:</th>
-                                <th>Rp {{ number_format($transaction->total_amount, 0, ',', '.') }}</th>
+                                <th>Rp {{ number_format($transaction->total, 0, ',', '.') }}</th>
                             </tr>
                         </tfoot>
                     </table>

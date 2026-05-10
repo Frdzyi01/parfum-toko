@@ -11,7 +11,7 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $totalRevenue = Transaction::whereIn('status', ['paid', 'completed'])->sum('total_amount');
+        $totalRevenue = Transaction::whereIn('status', ['processing', 'completed'])->sum('total');
         $totalOrders = Transaction::count();
         $totalProducts = Product::count();
         $recentTransactions = Transaction::with('user')->latest()->take(5)->get();
