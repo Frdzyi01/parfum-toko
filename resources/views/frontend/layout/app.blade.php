@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="zxx">
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Ashion Template" />
-    <meta name="keywords" content="Ashion, unica, creative, html" />
+    <meta name="description" content="Parfum Toko - Toko Parfum Online" />
+    <meta name="keywords" content="parfum, toko parfum, parfum online" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Ashion | Template</title>
+    <title>@yield('title', 'Parfum Toko')</title>
 
     <!-- Google Font -->
     <link
@@ -42,33 +42,58 @@
       <ul class="offcanvas__widget">
         <li><span class="icon_search search-switch"></span></li>
         <li>
-          <a href="#"
-            ><span class="icon_heart_alt"></span>
-            <div class="tip">2</div>
-          </a>
-        </li>
-        <li>
-          <a href="#"
-            ><span class="icon_bag_alt"></span>
-            <div class="tip">2</div>
+          <a href="{{ route('cart.index') }}">
+            <span class="icon_bag_alt"></span>
+            @auth
+              @php $cartCount = auth()->user()->cart ? auth()->user()->cart->items->sum('qty') : 0; @endphp
+              @if($cartCount > 0)
+                <div class="tip">{{ $cartCount }}</div>
+              @endif
+            @endauth
           </a>
         </li>
       </ul>
       <div class="offcanvas__logo">
-        <a href="./index.html"><img src="img/logo.png" alt="" /></a>
+        <a href="{{ route('home') }}"><img src="{{ asset('template-landing/img/logo.png') }}" alt="Parfum Toko" /></a>
       </div>
       <div id="mobile-menu-wrap"></div>
       <div class="offcanvas__auth">
-        <a href="#">Login</a>
-        <a href="#">Register</a>
+        @guest
+          <a href="{{ route('login') }}">Login</a>
+          <a href="{{ route('register') }}">Register</a>
+        @endguest
+        @auth
+          <a href="{{ route('transactions.index') }}">Pesanan Saya</a>
+          <a href="{{ route('logout') }}"
+             onclick="event.preventDefault(); document.getElementById('logout-form-mobile').submit();">Logout</a>
+          <form id="logout-form-mobile" action="{{ route('logout') }}" method="POST" style="display:none;">
+            @csrf
+          </form>
+        @endauth
       </div>
     </div>
     <!-- Offcanvas Menu End -->
+
+    <!-- Flash Messages -->
+    @if(session('success'))
+      <div class="container" style="margin-top:15px;">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <i class="fa fa-check-circle"></i> {{ session('success') }}
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+      </div>
+    @endif
+    @if(session('error'))
+      <div class="container" style="margin-top:15px;">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <i class="fa fa-exclamation-circle"></i> {{ session('error') }}
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+      </div>
+    @endif
 
     @include('frontend.layout.header')
 
     @yield('content')
 
     @include('frontend.layout.footer')
-
-    

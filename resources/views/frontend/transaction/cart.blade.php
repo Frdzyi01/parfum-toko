@@ -1,4 +1,5 @@
-@extends('frontend.layout.main')
+@extends('frontend.layout.app')
+@section('title', 'Keranjang Belanja - Parfum Toko')
 @section('content')
 
 <!-- Breadcrumb Begin -->
@@ -7,8 +8,8 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb__links">
-                    <a href="./index.html"><i class="fa fa-home"></i> Home</a>
-                    <span>Shopping cart</span>
+                    <a href="{{ route('home') }}"><i class="fa fa-home"></i> Home</a>
+                    <span>Keranjang Belanja</span>
                 </div>
             </div>
         </div>
@@ -19,120 +20,71 @@
 <!-- Shop Cart Section Begin -->
 <section class="shop-cart spad">
     <div class="container">
+        @if($cart->items->isEmpty())
+            <div class="row">
+                <div class="col-lg-12 text-center" style="padding: 60px 0;">
+                    <i class="icon_bag_alt" style="font-size:60px; color:#ccc;"></i>
+                    <h4 style="color:#999; margin-top:20px;">Keranjang Anda kosong</h4>
+                    <p style="color:#aaa;">Tambahkan produk ke keranjang terlebih dahulu.</p>
+                    <a href="{{ route('shop') }}" class="primary-btn" style="margin-top:20px;">Belanja Sekarang</a>
+                </div>
+            </div>
+        @else
         <div class="row">
             <div class="col-lg-12">
                 <div class="shop__cart__table">
                     <table>
                         <thead>
                             <tr>
-                                <th>Product</th>
-                                <th>Price</th>
+                                <th>Produk</th>
+                                <th>Harga</th>
                                 <th>Quantity</th>
                                 <th>Total</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($cart->items as $item)
                             <tr>
                                 <td class="cart__product__item">
-                                    <img src="img/shop-cart/cp-1.jpg" alt="" />
+                                    <img src="{{ $item->product->thumbnail_url }}" alt="{{ $item->product->name }}" />
                                     <div class="cart__product__item__title">
-                                        <h6>Chain bucket bag</h6>
-                                        <div class="rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
+                                        <h6>
+                                            <a href="{{ route('product.show', $item->product->slug) }}">
+                                                {{ $item->product->name }}
+                                            </a>
+                                        </h6>
+                                        <small style="color:#999;">Stok: {{ $item->product->stock }}</small>
                                     </div>
                                 </td>
-                                <td class="cart__price">$ 150.0</td>
+                                <td class="cart__price">{{ $item->product->formatted_price }}</td>
                                 <td class="cart__quantity">
-                                    <div class="pro-qty">
-                                        <input type="text" value="1" />
-                                    </div>
+                                    <form action="{{ route('cart.update', $item->product_id) }}" method="POST" class="d-flex align-items-center">
+                                        @csrf
+                                        <div class="pro-qty">
+                                            <input type="number" name="qty" value="{{ $item->qty }}"
+                                                   min="1" max="{{ $item->product->stock }}" style="width:70px;" />
+                                        </div>
+                                        <button type="submit" class="btn btn-sm btn-outline-secondary" style="margin-left:8px;">
+                                            <i class="fa fa-refresh"></i>
+                                        </button>
+                                    </form>
                                 </td>
-                                <td class="cart__total">$ 300.0</td>
+                                <td class="cart__total">
+                                    Rp {{ number_format($item->subtotal, 0, ',', '.') }}
+                                </td>
                                 <td class="cart__close">
-                                    <span class="icon_close"></span>
+                                    <form action="{{ route('cart.remove', $item->product_id) }}" method="POST"
+                                          onsubmit="return confirm('Hapus item ini dari keranjang?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" style="background:none;border:none;cursor:pointer;">
+                                            <span class="icon_close"></span>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
-                            <tr>
-                                <td class="cart__product__item">
-                                    <img src="img/shop-cart/cp-2.jpg" alt="" />
-                                    <div class="cart__product__item__title">
-                                        <h6>Zip-pockets pebbled tote briefcase</h6>
-                                        <div class="rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="cart__price">$ 170.0</td>
-                                <td class="cart__quantity">
-                                    <div class="pro-qty">
-                                        <input type="text" value="1" />
-                                    </div>
-                                </td>
-                                <td class="cart__total">$ 170.0</td>
-                                <td class="cart__close">
-                                    <span class="icon_close"></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="cart__product__item">
-                                    <img src="img/shop-cart/cp-3.jpg" alt="" />
-                                    <div class="cart__product__item__title">
-                                        <h6>Black jean</h6>
-                                        <div class="rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="cart__price">$ 85.0</td>
-                                <td class="cart__quantity">
-                                    <div class="pro-qty">
-                                        <input type="text" value="1" />
-                                    </div>
-                                </td>
-                                <td class="cart__total">$ 170.0</td>
-                                <td class="cart__close">
-                                    <span class="icon_close"></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="cart__product__item">
-                                    <img src="img/shop-cart/cp-4.jpg" alt="" />
-                                    <div class="cart__product__item__title">
-                                        <h6>Cotton Shirt</h6>
-                                        <div class="rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="cart__price">$ 55.0</td>
-                                <td class="cart__quantity">
-                                    <div class="pro-qty">
-                                        <input type="text" value="1" />
-                                    </div>
-                                </td>
-                                <td class="cart__total">$ 110.0</td>
-                                <td class="cart__close">
-                                    <span class="icon_close"></span>
-                                </td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -141,36 +93,23 @@
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="cart__btn">
-                    <a href="#">Continue Shopping</a>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <div class="cart__btn update__btn">
-                    <a href="#"><span class="icon_loading"></span> Update cart</a>
+                    <a href="{{ route('shop') }}">Lanjut Belanja</a>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-6">
-                <div class="discount__content">
-                    <h6>Discount codes</h6>
-                    <form action="#">
-                        <input type="text" placeholder="Enter your coupon code" />
-                        <button type="submit" class="site-btn">Apply</button>
-                    </form>
-                </div>
-            </div>
-            <div class="col-lg-4 offset-lg-2">
+            <div class="col-lg-4 offset-lg-8">
                 <div class="cart__total__procced">
-                    <h6>Cart total</h6>
+                    <h6>Total Keranjang</h6>
                     <ul>
-                        <li>Subtotal <span>$ 750.0</span></li>
-                        <li>Total <span>$ 750.0</span></li>
+                        <li>Subtotal <span>Rp {{ number_format($cart->getTotal(), 0, ',', '.') }}</span></li>
+                        <li>Total <span>Rp {{ number_format($cart->getTotal(), 0, ',', '.') }}</span></li>
                     </ul>
-                    <a href="#" class="primary-btn">Proceed to checkout</a>
+                    <a href="{{ route('checkout.index') }}" class="primary-btn">Lanjut ke Checkout</a>
                 </div>
             </div>
         </div>
+        @endif
     </div>
 </section>
 <!-- Shop Cart Section End -->
