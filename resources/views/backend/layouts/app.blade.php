@@ -3,7 +3,7 @@
 <html
     lang="en"
     class="layout-menu-fixed layout-compact"
-    data-assets-path="template-admin/assets/"
+    data-assets-path="{{ asset('template-admin/assets') }}/"
     data-template="vertical-menu-template-free">
 
 <head>
@@ -31,7 +31,8 @@
     <!-- Core CSS -->
     <!-- build:css assets/vendor/css/theme.css  -->
 
-    <link rel="stylesheet" href="{{ asset('template-admin/assets/vendor/css/core.css') }}" />
+    <link rel="stylesheet" href="{{ asset('template-admin/assets/vendor/css/core.css') }}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{ asset('template-admin/assets/vendor/css/theme-default.css') }}" class="template-customizer-theme-css" />
     <link rel="stylesheet" href="{{ asset('template-admin/assets/css/demo.css') }}" />
 
     <!-- Vendors CSS -->
