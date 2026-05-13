@@ -13,10 +13,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Admin user
+        User::factory()->create([
+            'name'  => 'Admin',
+            'email' => 'admin@example.com',
+            'password' => bcrypt('password'), // or use Hash::make('password') if Hash facade is imported
+            'role' => 'admin',
+        ]);
+
         // Demo user
         User::factory()->create([
             'name'  => 'Test User',
             'email' => 'test@example.com',
+            'role' => 'user', // Assuming default role might be user, good to set explicitly if there's a role system
         ]);
 
         // Seed produk parfum
