@@ -17,10 +17,15 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="{{ asset('template-landing/css/bootstrap.min.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset('template-landing/css/font-awesome.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" type="text/css" />
     <link rel="stylesheet" href="{{ asset('template-landing/css/elegant-icons.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset('template-landing/css/jquery-ui.min.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset('template-landing/css/magnific-popup.css') }}" type="text/css" />

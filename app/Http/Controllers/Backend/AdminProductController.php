@@ -25,6 +25,7 @@ class AdminProductController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
+            'category' => 'nullable|string|max:255',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'image' => 'nullable|image|max:2048',
@@ -52,6 +53,7 @@ class AdminProductController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
+            'category' => 'nullable|string|max:255',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'image' => 'nullable|image|max:2048',

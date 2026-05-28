@@ -13,9 +13,33 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $products = Product::active()
-            ->orderBy('created_at', 'desc')
-            ->paginate(9);
+        $query = Product::active();
+
+        // Filter by Search Query
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter by Categories
+        if ($request->filled('category')) {
+            $categories = (array) $request->category;
+            // If 'Semua' is checked, we don't filter by category (show all)
+            if (!in_array('Semua', $categories) && count($categories) > 0) {
+                $query->whereIn('category', $categories);
+            }
+        }
+
+        // Filter by Price Range
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $request->min_price);
+        }
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
+        $products = $query->orderBy('created_at', 'desc')
+            ->paginate(9)
+            ->withQueryString();
 
         return view('frontend.shop.shop', compact('products'));
     }

@@ -6,7 +6,7 @@
         <div class="card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Order Detail: {{ $transaction->invoice_number }}</h5>
-                <a href="{{ route('admin.transactions.index') }}" class="btn btn-sm btn-secondary">Back to Orders</a>
+                <a href="{{ route('admin.transactions.index') }}?tab=all_orders" class="btn btn-sm btn-secondary">Back to Orders</a>
             </div>
             <div class="card-body">
                 @if(session('success'))
@@ -53,8 +53,8 @@
                             <tr>
                                 <td>{{ $item->product->name ?? 'Deleted Product' }}</td>
                                 <td>Rp {{ number_format($item->price, 0, ',', '.') }}</td>
-                                <td>{{ $item->quantity }}</td>
-                                <td>Rp {{ number_format($item->price * $item->quantity, 0, ',', '.') }}</td>
+                                <td>{{ $item->qty }}</td>
+                                <td>Rp {{ number_format($item->subtotal, 0, ',', '.') }}</td>
                             </tr>
                             @endforeach
                         </tbody>

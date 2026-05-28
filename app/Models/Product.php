@@ -18,6 +18,7 @@ class Product extends Model
         'stock',
         'thumbnail',
         'status',
+        'category',
     ];
 
     protected $casts = [
@@ -86,6 +87,9 @@ class Product extends Model
     public function getThumbnailUrlAttribute(): string
     {
         if ($this->thumbnail) {
+            if (filter_var($this->thumbnail, FILTER_VALIDATE_URL)) {
+                return $this->thumbnail;
+            }
             return asset('storage/' . $this->thumbnail);
         }
         return asset('template-landing/img/product/fp-1.jpg');

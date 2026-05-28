@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedInteger('stock')->default(0);
             $table->string('thumbnail')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->string('category')->nullable();
             $table->timestamps();
         });
     }

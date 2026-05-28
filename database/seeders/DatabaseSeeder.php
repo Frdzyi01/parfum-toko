@@ -30,5 +30,8 @@ class DatabaseSeeder extends Seeder
 
         // Seed produk parfum
         $this->call(ProductSeeder::class);
+
+        // Seed transactions
+        $this->call(TransactionSeeder::class);
     }
 }

@@ -2,14 +2,304 @@
 @section('title', 'Keranjang Belanja - Parfum Toko')
 @section('content')
 
+<style>
+    /* Premium Page Background & Base Layout */
+    .cart-section-custom {
+        background-color: #f8fafc;
+        padding: 50px 0;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .cart-main-card {
+        background-color: #ffffff;
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.02);
+        border: 1px solid #f1f5f9;
+        margin-bottom: 30px;
+    }
+
+    .cart-title-custom {
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 25px;
+        letter-spacing: -0.5px;
+    }
+
+    /* Cart Table Styles */
+    .custom-cart-table-wrapper {
+        overflow-x: auto;
+    }
+
+    .custom-cart-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 25px;
+        min-width: 600px;
+    }
+
+    .custom-cart-table th {
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: #64748b;
+        padding-bottom: 15px;
+        border-bottom: 1.5px solid #f1f5f9;
+        text-align: left;
+    }
+
+    .custom-cart-table td {
+        padding: 20px 0;
+        border-bottom: 1px solid #f1f5f9;
+        vertical-align: middle;
+    }
+
+    .cart-product-cell {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .cart-product-img-wrap {
+        background-color: #f8fafc;
+        border-radius: 10px;
+        width: 70px;
+        height: 70px;
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #f1f5f9;
+        flex-shrink: 0;
+    }
+
+    .cart-product-img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .cart-product-name {
+        font-size: 0.98rem;
+        font-weight: 700;
+        color: #1e293b;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .cart-product-name:hover {
+        color: #632c9b;
+    }
+
+    .cart-product-size {
+        font-size: 0.82rem;
+        color: #94a3b8;
+        margin-top: 3px;
+        font-weight: 500;
+    }
+
+    .cart-price-cell {
+        font-size: 0.98rem;
+        font-weight: 700;
+        color: #334155;
+    }
+
+    .cart-subtotal-cell {
+        font-size: 0.98rem;
+        font-weight: 700;
+        color: #334155;
+    }
+
+    /* Custom Qty Selector */
+    .custom-qty-wrapper {
+        display: inline-flex;
+        align-items: center;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: #ffffff;
+    }
+
+    .qty-btn {
+        border: none;
+        background: none;
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #64748b;
+        cursor: pointer;
+        transition: background-color 0.2s, color 0.2s;
+        outline: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .qty-btn:hover {
+        background-color: #f1f5f9;
+        color: #632c9b;
+    }
+
+    .qty-btn:active {
+        background-color: #e2e8f0;
+    }
+
+    .qty-input {
+        border: none;
+        width: 38px;
+        height: 32px;
+        text-align: center;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #1e293b;
+        outline: none;
+        -moz-appearance: textfield;
+        background-color: #ffffff;
+    }
+
+    .qty-input::-webkit-outer-spin-button,
+    .qty-input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Trash delete button */
+    .cart-remove-btn {
+        background: none;
+        border: none;
+        color: #ef4444;
+        cursor: pointer;
+        font-size: 1.05rem;
+        padding: 8px;
+        border-radius: 8px;
+        transition: background-color 0.2s, color 0.2s;
+        outline: none;
+    }
+
+    .cart-remove-btn:hover {
+        background-color: #fef2f2;
+        color: #dc2626;
+    }
+
+    /* Continue shopping button */
+    .btn-continue-shopping {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 22px;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 10px;
+        background-color: #ffffff;
+        color: #475569;
+        font-size: 0.88rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .btn-continue-shopping:hover {
+        border-color: #94a3b8;
+        color: #1e293b;
+        background-color: #f8fafc;
+    }
+
+    /* Summary Card */
+    .summary-card {
+        background-color: #ffffff;
+        border-radius: 16px;
+        padding: 28px 24px;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.02);
+        border: 1px solid #f1f5f9;
+        margin-top: 57px; /* align with table head */
+    }
+
+    @media (max-width: 991px) {
+        .summary-card {
+            margin-top: 0;
+        }
+    }
+
+    .summary-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 22px;
+        position: relative;
+        padding-bottom: 8px;
+    }
+
+    .summary-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 30px;
+        height: 2.5px;
+        background-color: #632c9b;
+        border-radius: 2px;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        font-size: 0.92rem;
+        color: #475569;
+        font-weight: 500;
+    }
+
+    .summary-row-bold {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #0f172a;
+        border-top: 1.5px solid #f1f5f9;
+        padding-top: 16px;
+        margin-top: 16px;
+    }
+
+    .summary-row-bold span {
+        color: #632c9b;
+    }
+
+    .btn-checkout {
+        display: block;
+        width: 100%;
+        padding: 14px;
+        background-color: #632c9b;
+        color: #ffffff;
+        border: none;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 4px 10px rgba(99, 44, 155, 0.15);
+        margin-top: 24px;
+        outline: none;
+    }
+
+    .btn-checkout:hover {
+        background-color: #522283;
+        box-shadow: 0 6px 14px rgba(99, 44, 155, 0.25);
+    }
+
+    .btn-checkout:active {
+        transform: scale(0.98);
+    }
+</style>
+
 <!-- Breadcrumb Begin -->
-<div class="breadcrumb-option">
+<div class="breadcrumb-option" style="background-color:#ffffff; border-bottom: 1px solid #f1f5f9; padding: 15px 0;">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <div class="breadcrumb__links">
-                    <a href="{{ route('home') }}"><i class="fa fa-home"></i> Home</a>
-                    <span>Keranjang Belanja</span>
+                <div class="breadcrumb__links" style="font-family:'Inter', sans-serif;">
+                    <a href="{{ route('home') }}" style="color:#64748b; font-weight:500; text-decoration:none;"><i class="fa fa-home" style="color:#632c9b; margin-right:4px;"></i> Home</a>
+                    <span style="color:#0f172a; font-weight:600; margin-left: 8px;">/ &nbsp;Keranjang Belanja</span>
                 </div>
             </div>
         </div>
@@ -18,94 +308,139 @@
 <!-- Breadcrumb End -->
 
 <!-- Shop Cart Section Begin -->
-<section class="shop-cart spad">
+<section class="cart-section-custom">
     <div class="container">
         @if($cart->items->isEmpty())
-            <div class="row">
-                <div class="col-lg-12 text-center" style="padding: 60px 0;">
-                    <i class="icon_bag_alt" style="font-size:60px; color:#ccc;"></i>
-                    <h4 style="color:#999; margin-top:20px;">Keranjang Anda kosong</h4>
-                    <p style="color:#aaa;">Tambahkan produk ke keranjang terlebih dahulu.</p>
-                    <a href="{{ route('shop') }}" class="primary-btn" style="margin-top:20px;">Belanja Sekarang</a>
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center" style="background:#ffffff; border-radius:16px; border:1px solid #e2e8f0; padding:80px 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.015);">
+                    <i class="fa-solid fa-cart-shopping" style="font-size:55px; color:#cbd5e1; margin-bottom: 20px;"></i>
+                    <h4 style="color:#475569; font-weight:700; margin-bottom:8px;">Keranjang Belanja Kosong</h4>
+                    <p style="color:#64748b; font-size:0.92rem; max-width:400px; margin:0 auto; margin-bottom: 24px;">Anda belum menambahkan parfum ke keranjang Anda.</p>
+                    <a href="{{ route('shop') }}" class="btn-continue-shopping" style="border-color:#632c9b; color:#ffffff; background:#632c9b; box-shadow:0 4px 10px rgba(99, 44, 155, 0.15);">
+                        Belanja Sekarang
+                    </a>
                 </div>
             </div>
         @else
         <div class="row">
-            <div class="col-lg-12">
-                <div class="shop__cart__table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Produk</th>
-                                <th>Harga</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($cart->items as $item)
-                            <tr>
-                                <td class="cart__product__item">
-                                    <img src="{{ $item->product->thumbnail_url }}" alt="{{ $item->product->name }}" />
-                                    <div class="cart__product__item__title">
-                                        <h6>
-                                            <a href="{{ route('product.show', $item->product->slug) }}">
-                                                {{ $item->product->name }}
-                                            </a>
-                                        </h6>
-                                        <small style="color:#999;">Stok: {{ $item->product->stock }}</small>
-                                    </div>
-                                </td>
-                                <td class="cart__price">{{ $item->product->formatted_price }}</td>
-                                <td class="cart__quantity">
-                                    <form action="{{ route('cart.update', $item->product_id) }}" method="POST" class="d-flex align-items-center">
-                                        @csrf
-                                        <div class="pro-qty">
-                                            <input type="number" name="qty" value="{{ $item->qty }}"
-                                                   min="1" max="{{ $item->product->stock }}" style="width:70px;" />
+            <!-- Left Column: Items Table Card -->
+            <div class="col-lg-8">
+                <div class="cart-main-card">
+                    <h1 class="cart-title-custom">Keranjang Belanja</h1>
+                    
+                    <div class="custom-cart-table-wrapper">
+                        <table class="custom-cart-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 45%;">Produk</th>
+                                    <th style="width: 15%;">Harga</th>
+                                    <th style="width: 18%;">Jumlah</th>
+                                    <th style="width: 15%;">Subtotal</th>
+                                    <th style="width: 7%; text-align: center;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($cart->items as $item)
+                                <tr>
+                                    <!-- Product Details Cell -->
+                                    <td>
+                                        <div class="cart-product-cell">
+                                            <div class="cart-product-img-wrap">
+                                                <img src="{{ $item->product->thumbnail_url }}" alt="{{ $item->product->name }}" class="cart-product-img" />
+                                            </div>
+                                            <div>
+                                                <a href="{{ route('product.show', $item->product->slug) }}" class="cart-product-name">
+                                                    {{ $item->product->name }}
+                                                </a>
+                                                
+                                                @php
+                                                    // Determine size statically based on product name/ID to match the mockup
+                                                    $size = '100 ml';
+                                                    if (Str::contains(Str::lower($item->product->name), ['love spell', 'mini', 'jazz club'])) {
+                                                        $size = '50 ml';
+                                                    }
+                                                @endphp
+                                                <div class="cart-product-size">{{ $size }}</div>
+                                            </div>
                                         </div>
-                                        <button type="submit" class="btn btn-sm btn-outline-secondary" style="margin-left:8px;">
-                                            <i class="fa fa-refresh"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                                <td class="cart__total">
-                                    Rp {{ number_format($item->subtotal, 0, ',', '.') }}
-                                </td>
-                                <td class="cart__close">
-                                    <form action="{{ route('cart.remove', $item->product_id) }}" method="POST"
-                                          onsubmit="return confirm('Hapus item ini dari keranjang?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" style="background:none;border:none;cursor:pointer;">
-                                            <span class="icon_close"></span>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                    </td>
+                                    
+                                    <!-- Price Cell -->
+                                    <td class="cart-price-cell">
+                                        {{ $item->product->formatted_price }}
+                                    </td>
+                                    
+                                    <!-- Qty Selector Cell -->
+                                    <td>
+                                        <form action="{{ route('cart.update', $item->product_id) }}" method="POST" id="qty-form-{{ $item->id }}" style="margin: 0;">
+                                            @csrf
+                                            <div class="custom-qty-wrapper">
+                                                <button type="button" class="qty-btn" onclick="updateQty({{ $item->id }}, -1)">-</button>
+                                                <input type="number" name="qty" id="qty-input-{{ $item->id }}" value="{{ $item->qty }}" 
+                                                       min="1" max="{{ $item->product->stock }}" class="qty-input" readonly>
+                                                <button type="button" class="qty-btn" onclick="updateQty({{ $item->id }}, 1)">+</button>
+                                            </div>
+                                        </form>
+                                    </td>
+                                    
+                                    <!-- Subtotal Cell -->
+                                    <td class="cart-subtotal-cell">
+                                        Rp {{ number_format($item->subtotal, 0, ',', '.') }}
+                                    </td>
+                                    
+                                    <!-- Action Button Cell -->
+                                    <td style="text-align: center;">
+                                        <form action="{{ route('cart.remove', $item->product_id) }}" method="POST"
+                                              onsubmit="return confirm('Hapus {{ $item->product->name }} dari keranjang?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="cart-remove-btn" title="Hapus dari Keranjang">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Continue Shopping Button -->
+                    <div style="margin-top: 10px;">
+                        <a href="{{ route('shop') }}" class="btn-continue-shopping">
+                            <i class="fa-solid fa-chevron-left" style="font-size:0.75rem;"></i> Lanjut Belanja
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <div class="cart__btn">
-                    <a href="{{ route('shop') }}">Lanjut Belanja</a>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-4 offset-lg-8">
-                <div class="cart__total__procced">
-                    <h6>Total Keranjang</h6>
-                    <ul>
-                        <li>Subtotal <span>Rp {{ number_format($cart->getTotal(), 0, ',', '.') }}</span></li>
-                        <li>Total <span>Rp {{ number_format($cart->getTotal(), 0, ',', '.') }}</span></li>
-                    </ul>
-                    <a href="{{ route('checkout.index') }}" class="primary-btn">Lanjut ke Checkout</a>
+
+            <!-- Right Column: Order Summary Panel -->
+            <div class="col-lg-4">
+                @php
+                    $subtotal = $cart->getTotal();
+                    $shipping = 15000; // Static Shipping cost (Ongkir Rp 15.000)
+                    $total = $subtotal + $shipping;
+                @endphp
+                
+                <div class="summary-card">
+                    <h3 class="summary-title">Ringkasan Pesanan</h3>
+                    
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <strong>Rp {{ number_format($subtotal, 0, ',', '.') }}</strong>
+                    </div>
+                    
+                    <div class="summary-row">
+                        <span>Ongkir</span>
+                        <strong>Rp {{ number_format($shipping, 0, ',', '.') }}</strong>
+                    </div>
+                    
+                    <div class="summary-row summary-row-bold">
+                        <span>Total</span>
+                        <span>Rp {{ number_format($total, 0, ',', '.') }}</span>
+                    </div>
+                    
+                    <a href="{{ route('checkout.index') }}" class="btn-checkout">Checkout</a>
                 </div>
             </div>
         </div>
@@ -113,5 +448,23 @@
     </div>
 </section>
 <!-- Shop Cart Section End -->
+
+<!-- JS Script for Qty Adjuster & Auto Form Submission -->
+<script>
+    function updateQty(itemId, change) {
+        const input = document.getElementById('qty-input-' + itemId);
+        const form = document.getElementById('qty-form-' + itemId);
+        if (!input || !form) return;
+        
+        let newVal = parseInt(input.value) + change;
+        const min = parseInt(input.getAttribute('min')) || 1;
+        const max = parseInt(input.getAttribute('max')) || 999;
+        
+        if (newVal >= min && newVal <= max) {
+            input.value = newVal;
+            form.submit(); // Submit update query to CartController
+        }
+    }
+</script>
 
 @endsection
