@@ -23,8 +23,8 @@ class TransactionSeeder extends Seeder
             return;
         }
 
-        // Create transactions over the last 20 days
-        for ($i = 0; $i < 20; $i++) {
+        // Create exactly 2 transactions
+        for ($i = 0; $i < 2; $i++) {
             $user = $users->random();
             $date = Carbon::now()->subDays(rand(0, 20))->subHours(rand(0, 23))->subMinutes(rand(0, 59));
             

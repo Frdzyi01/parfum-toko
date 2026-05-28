@@ -4,8 +4,9 @@
     .header-custom {
         background-color: #632c9b !important;
         padding: 14px 0 !important;
-        position: relative;
-        z-index: 99;
+        position: sticky;
+        top: 0;
+        z-index: 999;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
     }
     

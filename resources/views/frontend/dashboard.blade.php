@@ -800,6 +800,7 @@
                     <form action="{{ route('cart.add', $product->id) }}" method="POST" style="margin:0; flex:1;">
                         @csrf
                         <input type="hidden" name="qty" value="1">
+                        <input type="hidden" name="buy_now" value="1">
                         <button type="submit" class="product-btn-solid" style="width:100%;">
                             Beli Sekarang
                         </button>
