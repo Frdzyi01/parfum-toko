@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\Pengguna;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
 
@@ -13,34 +13,34 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Clean up database first to leave exactly the seeded data
+        // Bersihkan database terlebih dahulu agar hanya menyisakan data seeder
         Schema::disableForeignKeyConstraints();
-        \App\Models\TransactionItem::query()->delete();
-        \App\Models\Transaction::query()->delete();
-        \App\Models\Product::query()->delete();
-        User::query()->delete();
+        \App\Models\DetailTransaksi::query()->delete();
+        \App\Models\Transaksi::query()->delete();
+        \App\Models\Produk::query()->delete();
+        Pengguna::query()->delete();
         Schema::enableForeignKeyConstraints();
 
-        // Admin user
-        User::create([
-            'name'  => 'Admin',
+        // Pengguna Admin
+        Pengguna::create([
+            'nama'  => 'Admin',
             'email' => 'admin@example.com',
             'password' => bcrypt('password'),
-            'role' => 'admin',
+            'peran' => 'admin',
         ]);
 
-        // Demo user
-        User::create([
-            'name'  => 'Test User',
+        // Pengguna Demo
+        Pengguna::create([
+            'nama'  => 'Test User',
             'email' => 'test@example.com',
             'password' => bcrypt('password'),
-            'role' => 'user',
+            'peran' => 'pengguna',
         ]);
 
         // Seed produk parfum
-        $this->call(ProductSeeder::class);
+        $this->call(ProdukSeeder::class);
 
-        // Seed transactions
-        $this->call(TransactionSeeder::class);
+        // Seed transaksi
+        $this->call(TransaksiSeeder::class);
     }
 }

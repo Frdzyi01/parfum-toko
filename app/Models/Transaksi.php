@@ -6,56 +6,58 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Transaction extends Model
+class Transaksi extends Model
 {
     use HasFactory;
 
+    protected $table = 'transaksi';
+
     protected $fillable = [
-        'user_id',
-        'invoice_number',
+        'pengguna_id',
+        'nomor_invoice',
         'total',
         'status',
-        'notes',
+        'catatan',
     ];
 
     protected $casts = [
         'total' => 'decimal:2',
     ];
 
-    // Auto-generate invoice number
+    // Buat nomor invoice secara otomatis
     protected static function boot()
     {
         parent::boot();
 
-        static::creating(function ($transaction) {
-            if (empty($transaction->invoice_number)) {
-                $transaction->invoice_number = static::generateInvoiceNumber();
+        static::creating(function ($transaksi) {
+            if (empty($transaksi->nomor_invoice)) {
+                $transaksi->nomor_invoice = static::buatNomorInvoice();
             }
         });
     }
 
-    public static function generateInvoiceNumber(): string
+    public static function buatNomorInvoice(): string
     {
         do {
             $invoice = 'INV-' . strtoupper(Str::random(4)) . '-' . date('Ymd');
-        } while (static::where('invoice_number', $invoice)->exists());
+        } while (static::where('nomor_invoice', $invoice)->exists());
 
         return $invoice;
     }
 
     // Relations
-    public function user()
+    public function pengguna()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Pengguna::class, 'pengguna_id');
     }
 
-    public function items()
+    public function item()
     {
-        return $this->hasMany(TransactionItem::class);
+        return $this->hasMany(DetailTransaksi::class, 'transaksi_id');
     }
 
     // Status label helper
-    public function getStatusLabelAttribute(): string
+    public function getLabelStatusAttribute(): string
     {
         return match ($this->status) {
             'pending'    => 'Pending',
@@ -66,7 +68,7 @@ class Transaction extends Model
         };
     }
 
-    public function getStatusBadgeAttribute(): string
+    public function getBadgeStatusAttribute(): string
     {
         return match ($this->status) {
             'pending'    => 'warning',
@@ -77,7 +79,7 @@ class Transaction extends Model
         };
     }
 
-    public function getFormattedTotalAttribute(): string
+    public function getTotalFormatAttribute(): string
     {
         return 'Rp ' . number_format($this->total, 0, ',', '.');
     }

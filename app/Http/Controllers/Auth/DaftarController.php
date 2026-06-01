@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Pengguna;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class RegisterController extends Controller
+class DaftarController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | Register Controller
+    | Register Controller (Daftar Controller)
     |--------------------------------------------------------------------------
     |
     | This controller handles the registration of new users as well as their
@@ -43,13 +43,14 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
+     * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'nama' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:pengguna'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -57,12 +58,13 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @return User
+     * @param  array  $data
+     * @return \App\Models\Pengguna
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
+        return Pengguna::create([
+            'nama' => $data['nama'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);

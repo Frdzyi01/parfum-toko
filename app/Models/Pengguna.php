@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class Pengguna extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<\Database\Factories\PenggunaFactory> */
     use HasFactory, Notifiable;
+
+    protected $table = 'pengguna';
 
     /**
      * The attributes that are mass assignable.
@@ -18,10 +19,10 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'nama',
         'email',
         'password',
-        'role',
+        'peran',
     ];
 
     /**
@@ -48,19 +49,19 @@ class User extends Authenticatable
     }
 
     // Relations
-    public function cart()
+    public function keranjang()
     {
-        return $this->hasOne(Cart::class);
+        return $this->hasOne(Keranjang::class, 'pengguna_id');
     }
 
-    public function transactions()
+    public function transaksi()
     {
-        return $this->hasMany(Transaction::class);
+        return $this->hasMany(Transaksi::class, 'pengguna_id');
     }
 
-    // Get or create cart for this user
-    public function getOrCreateCart(): Cart
+    // Ambil atau buat keranjang untuk pengguna ini
+    public function ambilAtauBuatKeranjang(): Keranjang
     {
-        return $this->cart ?? $this->cart()->create();
+        return $this->keranjang ?? $this->keranjang()->create();
     }
 }

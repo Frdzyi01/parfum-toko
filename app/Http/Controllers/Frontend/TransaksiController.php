@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Transaction;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class TransactionController extends Controller
+class TransaksiController extends Controller
 {
     public function __construct()
     {
@@ -19,26 +19,26 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $transactions = Auth::user()
-            ->transactions()
+        $transaksi = Auth::user()
+            ->transaksi()
             ->latest()
             ->paginate(10);
 
-        return view('frontend.transaction.index', compact('transactions'));
+        return view('frontend.transaction.index', compact('transaksi'));
     }
 
     /**
      * Detail transaksi berdasarkan invoice number.
      * Customer hanya bisa melihat transaksi miliknya sendiri.
      */
-    public function show(string $invoice)
+    public function tampilkan(string $invoice)
     {
-        $transaction = Auth::user()
-            ->transactions()
-            ->with('items.product')
-            ->where('invoice_number', $invoice)
+        $transaksi = Auth::user()
+            ->transaksi()
+            ->with('item.produk')
+            ->where('nomor_invoice', $invoice)
             ->firstOrFail();
 
-        return view('frontend.transaction.show', compact('transaction'));
+        return view('frontend.transaction.show', compact('transaksi'));
     }
 }

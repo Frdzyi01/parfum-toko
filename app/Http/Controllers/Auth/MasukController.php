@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
-class LoginController extends Controller
+class MasukController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | Login Controller
+    | Login Controller (Masuk Controller)
     |--------------------------------------------------------------------------
     |
     | This controller handles authenticating users for the application and
@@ -40,8 +40,8 @@ class LoginController extends Controller
 
     protected function authenticated(\Illuminate\Http\Request $request, $user)
     {
-        if ($user->role === 'admin') {
-            return redirect()->route('admin.dashboard');
+        if ($user->peran === 'admin') {
+            return redirect()->route('admin.dasbor');
         }
 
         return redirect()->intended($this->redirectTo);

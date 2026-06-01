@@ -2,30 +2,30 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
-use App\Models\Transaction;
-use App\Models\TransactionItem;
-use App\Models\User;
+use App\Models\Produk;
+use App\Models\Transaksi;
+use App\Models\DetailTransaksi;
+use App\Models\Pengguna;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 
-class TransactionSeeder extends Seeder
+class TransaksiSeeder extends Seeder
 {
     public function run(): void
     {
-        $users = User::where('role', 'user')->get();
-        if ($users->isEmpty()) {
+        $pengguna = Pengguna::where('peran', 'pengguna')->get();
+        if ($pengguna->isEmpty()) {
             return;
         }
 
-        $products = Product::all();
-        if ($products->isEmpty()) {
+        $produk = Produk::all();
+        if ($produk->isEmpty()) {
             return;
         }
 
         // Create exactly 2 transactions
         for ($i = 0; $i < 2; $i++) {
-            $user = $users->random();
+            $user = $pengguna->random();
             $date = Carbon::now()->subDays(rand(0, 20))->subHours(rand(0, 23))->subMinutes(rand(0, 59));
             
             // Random status (completed is more likely for revenue stats)
@@ -33,12 +33,12 @@ class TransactionSeeder extends Seeder
             $status = $statuses[array_rand($statuses)];
 
             // Create transaction
-            $transaction = Transaction::create([
-                'user_id' => $user->id,
-                'invoice_number' => Transaction::generateInvoiceNumber(),
+            $transaksi = Transaksi::create([
+                'pengguna_id' => $user->id,
+                'nomor_invoice' => Transaksi::buatNomorInvoice(),
                 'total' => 0,
                 'status' => $status,
-                'notes' => 'Catatan pesanan demo.',
+                'catatan' => 'Catatan pesanan demo.',
                 'created_at' => $date,
                 'updated_at' => $date,
             ]);
@@ -47,22 +47,22 @@ class TransactionSeeder extends Seeder
             $total = 0;
             $itemsCount = rand(1, 3);
             // Ensure unique random products
-            $itemsCount = min($itemsCount, $products->count());
-            $selectedProducts = $products->random($itemsCount);
+            $itemsCount = min($itemsCount, $produk->count());
+            $selectedProducts = $produk->random($itemsCount);
 
             // Handle collection vs single model random results
-            $selectedProducts = $selectedProducts instanceof Product ? collect([$selectedProducts]) : $selectedProducts;
+            $selectedProducts = $selectedProducts instanceof Produk ? collect([$selectedProducts]) : $selectedProducts;
 
-            foreach ($selectedProducts as $product) {
-                $qty = rand(1, 2);
-                $subtotal = $product->price * $qty;
+            foreach ($selectedProducts as $itemProduk) {
+                $jumlah = rand(1, 2);
+                $subtotal = $itemProduk->harga * $jumlah;
                 $total += $subtotal;
 
-                TransactionItem::create([
-                    'transaction_id' => $transaction->id,
-                    'product_id' => $product->id,
-                    'qty' => $qty,
-                    'price' => $product->price,
+                DetailTransaksi::create([
+                    'transaksi_id' => $transaksi->id,
+                    'produk_id' => $itemProduk->id,
+                    'jumlah' => $jumlah,
+                    'harga' => $itemProduk->harga,
                     'subtotal' => $subtotal,
                     'created_at' => $date,
                     'updated_at' => $date,
@@ -70,7 +70,7 @@ class TransactionSeeder extends Seeder
             }
 
             // Update total
-            $transaction->update(['total' => $total]);
+            $transaksi->update(['total' => $total]);
         }
     }
 }
