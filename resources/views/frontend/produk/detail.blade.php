@@ -1,5 +1,5 @@
 @extends('frontend.layout.app')
-@section('title', $product->name . ' - Parfum Toko')
+@section('title', $produk->nama . ' - Parfum Toko')
 @section('content')
 
 <!-- Breadcrumb Begin -->
@@ -8,11 +8,11 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb__links" style="font-family: 'Inter', sans-serif; font-size: 0.9rem; color: #64748b;">
-                    <a href="{{ route('home') }}" style="color: #64748b; text-decoration: none;">Beranda</a>
+                    <a href="{{ route('beranda') }}" style="color: #64748b; text-decoration: none;">Beranda</a>
                     <span style="margin: 0 8px; color: #cbd5e1;">&gt;</span>
-                    <a href="{{ route('shop') }}" style="color: #64748b; text-decoration: none;">Katalog</a>
+                    <a href="{{ route('toko') }}" style="color: #64748b; text-decoration: none;">Katalog</a>
                     <span style="margin: 0 8px; color: #cbd5e1;">&gt;</span>
-                    <span style="color: #1e293b; font-weight: 500;">{{ $product->name }}</span>
+                    <span style="color: #1e293b; font-weight: 500;">{{ $produk->nama }}</span>
                 </div>
             </div>
         </div>
@@ -27,7 +27,7 @@
             <!-- Left Column: Product Image -->
             <div class="col-lg-6 mb-4 mb-lg-0">
                 <div class="product-image-card" style="border: 1px solid #e2e8f0; border-radius: 20px; overflow: hidden; background-color: #ffffff; box-shadow: 0 10px 30px rgba(0,0,0,0.015); display: flex; align-items: center; justify-content: center; padding: 30px; min-height: 480px; height: 100%;">
-                    <img src="{{ $product->thumbnail_url }}" alt="{{ $product->name }}" style="max-width: 100%; max-height: 440px; object-fit: contain; border-radius: 12px;" />
+                    <img src="{{ $produk->gambar_mini_url }}" alt="{{ $produk->nama }}" style="max-width: 100%; max-height: 440px; object-fit: contain; border-radius: 12px;" />
                 </div>
             </div>
             
@@ -36,22 +36,22 @@
                 <div class="product-info-container" style="padding: 10px 0 10px 20px;">
                     <!-- Product Name -->
                     <h1 style="font-family: 'Montserrat', sans-serif; font-size: 2.2rem; font-weight: 700; color: #0f172a; margin-bottom: 6px; letter-spacing: -0.5px; line-height: 1.2;">
-                        {{ $product->name }}
+                        {{ $produk->nama }}
                     </h1>
                     
                     <!-- Category -->
                     <div style="font-size: 0.95rem; color: #64748b; margin-bottom: 20px; font-weight: 500;">
-                        {{ $product->category }}
+                        {{ $produk->kategori }}
                     </div>
                     
                     <!-- Price -->
                     <div style="font-family: 'Montserrat', sans-serif; font-size: 2rem; font-weight: 700; color: #632c9b; margin-bottom: 12px; letter-spacing: -0.5px;">
-                        {{ $product->formatted_price }}
+                        {{ $produk->harga_format }}
                     </div>
                     
                     <!-- Stock Status -->
                     <div style="margin-bottom: 28px; display: flex; align-items: center; gap: 8px;">
-                        @if($product->isInStock())
+                        @if($produk->apakahAdaStok())
                             <span style="display: inline-block; width: 8px; height: 8px; background-color: #10b981; border-radius: 50%;"></span>
                             <span style="color: #10b981; font-weight: 600; font-size: 0.95rem;">Stok tersedia</span>
                         @else
@@ -64,19 +64,19 @@
                     <div style="margin-bottom: 35px;">
                         <h4 style="font-size: 1.05rem; font-weight: 700; color: #1e293b; margin-bottom: 8px;">Deskripsi</h4>
                         <p style="font-size: 0.95rem; color: #475569; line-height: 1.7; margin-bottom: 0;">
-                            {{ $product->description ?? 'Tidak ada deskripsi produk.' }}
+                            {{ $produk->deskripsi ?? 'Tidak ada deskripsi produk.' }}
                         </p>
                     </div>
                     
                     <!-- Order Form -->
-                    <form action="{{ route('cart.add', $product->id) }}" method="POST" id="order-form">
+                    <form action="{{ route('keranjang.tambah', $produk->id) }}" method="POST" id="order-form">
                         @csrf
                         
                         <!-- Row 1: Dropdown Ukuran -->
                         <div style="margin-bottom: 28px; max-width: 280px;">
                             <label for="size-select" style="display: block; font-size: 0.9rem; font-weight: 700; color: #1e293b; margin-bottom: 8px;">Ukuran</label>
                             <div style="position: relative;">
-                                <select id="size-select" name="size" style="width: 100%; padding: 12px 16px; font-size: 0.95rem; color: #1e293b; background-color: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 12px; appearance: none; outline: none; cursor: pointer; font-family: inherit; font-weight: 500; transition: border-color 0.2s;">
+                                <select id="size-select" name="ukuran" style="width: 100%; padding: 12px 16px; font-size: 0.95rem; color: #1e293b; background-color: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 12px; appearance: none; outline: none; cursor: pointer; font-family: inherit; font-weight: 500; transition: border-color 0.2s;">
                                     <option value="100ml">100 ml</option>
                                     <option value="50ml">50 ml</option>
                                     <option value="30ml">30 ml</option>
@@ -96,7 +96,7 @@
                                     <button type="button" id="qty-minus-btn" style="background: none; border: none; width: 44px; height: 100%; cursor: pointer; color: #64748b; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; transition: color 0.2s; outline: none;">
                                         <i class="fa-solid fa-minus"></i>
                                     </button>
-                                    <input type="number" id="qty-input" name="qty" value="1" min="1" max="{{ $product->stock }}" style="border: none; width: 52px; height: 100%; text-align: center; font-family: inherit; font-weight: 600; font-size: 1rem; color: #0f172a; outline: none; appearance: textfield; margin: 0; padding: 0;" {{ !$product->isInStock() ? 'disabled' : '' }} />
+                                    <input type="number" id="qty-input" name="jumlah" value="1" min="1" max="{{ $produk->stok }}" style="border: none; width: 52px; height: 100%; text-align: center; font-family: inherit; font-weight: 600; font-size: 1rem; color: #0f172a; outline: none; appearance: textfield; margin: 0; padding: 0;" {{ !$produk->apakahAdaStok() ? 'disabled' : '' }} />
                                     <button type="button" id="qty-plus-btn" style="background: none; border: none; width: 44px; height: 100%; cursor: pointer; color: #64748b; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; transition: color 0.2s; outline: none;">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
@@ -106,13 +106,13 @@
                             <!-- Right: Add to Cart & Buy Now Buttons -->
                             <div class="col-sm-7">
                                 <div style="display: flex; flex-direction: column; gap: 12px;">
-                                    @if($product->isInStock())
+                                    @if($produk->apakahAdaStok())
                                         @guest
                                             <!-- Guest Buttons: Redirect to Login -->
-                                            <a href="{{ route('login') }}" style="display: flex; align-items: center; justify-content: center; height: 48px; background-color: #632c9b; color: #ffffff; font-weight: 600; font-size: 0.95rem; border-radius: 12px; text-decoration: none; border: none; box-shadow: 0 4px 12px rgba(99,44,155,0.15); transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#522283'" onmouseout="this.style.backgroundColor='#632c9b'">
+                                            <a href="{{ route('masuk') }}" style="display: flex; align-items: center; justify-content: center; height: 48px; background-color: #632c9b; color: #ffffff; font-weight: 600; font-size: 0.95rem; border-radius: 12px; text-decoration: none; border: none; box-shadow: 0 4px 12px rgba(99,44,155,0.15); transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#522283'" onmouseout="this.style.backgroundColor='#632c9b'">
                                                 Tambah ke Keranjang
                                             </a>
-                                            <a href="{{ route('login') }}" style="display: flex; align-items: center; justify-content: center; height: 48px; background-color: #ffffff; color: #632c9b; font-weight: 600; font-size: 0.95rem; border-radius: 12px; border: 1.5px solid #632c9b; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.backgroundColor='#fdfaff'" onmouseout="this.style.backgroundColor='#ffffff'">
+                                            <a href="{{ route('masuk') }}" style="display: flex; align-items: center; justify-content: center; height: 48px; background-color: #ffffff; color: #632c9b; font-weight: 600; font-size: 0.95rem; border-radius: 12px; border: 1.5px solid #632c9b; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.backgroundColor='#fdfaff'" onmouseout="this.style.backgroundColor='#ffffff'">
                                                 Beli Sekarang
                                             </a>
                                         @endguest
@@ -141,7 +141,7 @@
         </div>
 
         <!-- Related Products Section -->
-        @if($relatedProducts->count())
+        @if($produkTerkait->count())
         <div class="row" style="margin-top: 40px; border-top: 1px solid #f1f5f9; padding-top: 50px;">
             <div class="col-lg-12 text-center" style="margin-bottom: 40px;">
                 <h3 style="font-family: 'Montserrat', sans-serif; font-size: 1.5rem; font-weight: 700; color: #0f172a; text-transform: uppercase; letter-spacing: 1px;">
@@ -150,20 +150,20 @@
                 <div style="width: 50px; height: 3px; background-color: #632c9b; margin: 12px auto 0 auto; border-radius: 2px;"></div>
             </div>
             
-            @foreach($relatedProducts as $related)
+            @foreach($produkTerkait as $terkait)
             <div class="col-lg-3 col-md-4 col-sm-6">
                 <div class="product__item">
                     <div class="product__item__pic set-bg"
-                        data-setbg="{{ $related->thumbnail_url }}"
+                        data-setbg="{{ $terkait->gambar_mini_url }}"
                         style="height: 270px; background-size: cover; background-position: center; border-radius: 16px; position: relative;">
                         <ul class="product__hover" style="position: absolute; left: 0; bottom: 15px; width: 100%; text-align: center; margin: 0; padding: 0; display: flex; justify-content: center; gap: 8px;">
                             <li>
-                                <a href="{{ $related->thumbnail_url }}" class="image-popup" style="width: 40px; height: 40px; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #111111; font-size: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                                <a href="{{ $terkait->gambar_mini_url }}" class="image-popup" style="width: 40px; height: 40px; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #111111; font-size: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
                                     <span class="arrow_expand"></span>
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('product.show', $related->slug) }}" style="width: 40px; height: 40px; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #111111; font-size: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                                <a href="{{ route('produk.tampilkan', $terkait->slug) }}" style="width: 40px; height: 40px; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #111111; font-size: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
                                     <span class="icon_bag_alt"></span>
                                 </a>
                             </li>
@@ -171,12 +171,12 @@
                     </div>
                     <div class="product__item__text" style="padding-top: 15px; text-align: center;">
                         <h6 style="margin-bottom: 5px;">
-                            <a href="{{ route('product.show', $related->slug) }}" style="color: #1e293b; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#632c9b'" onmouseout="this.style.color='#1e293b'">
-                                {{ $related->name }}
+                            <a href="{{ route('produk.tampilkan', $terkait->slug) }}" style="color: #1e293b; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#632c9b'" onmouseout="this.style.color='#1e293b'">
+                                {{ $terkait->nama }}
                             </a>
                         </h6>
                         <div class="product__price" style="color: #632c9b; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1rem;">
-                            {{ $related->formatted_price }}
+                            {{ $terkait->harga_format }}
                         </div>
                     </div>
                 </div>
@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
         buyNowBtn.addEventListener('click', function () {
             const buyNowInput = document.createElement('input');
             buyNowInput.type = 'hidden';
-            buyNowInput.name = 'buy_now';
+            buyNowInput.name = 'beli_sekarang';
             buyNowInput.value = '1';
             orderForm.appendChild(buyNowInput);
             orderForm.submit();

@@ -16,9 +16,9 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->role === 'admin') {
+        if (Auth::check() && Auth::user()->peran === 'admin') {
             return $next($request);
         }
-        return redirect()->route('admin.login')->withErrors(['email' => 'You must be an admin to access this area.']);
+        return redirect()->route('admin.masuk')->withErrors(['email' => 'Anda harus menjadi admin untuk mengakses halaman ini.']);
     }
 }

@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb__links">
-                    <a href="{{ route('home') }}"><i class="fa fa-home"></i> Home</a>
+                    <a href="{{ route('beranda') }}"><i class="fa fa-home"></i> Beranda</a>
                     <span>Riwayat Pesanan</span>
                 </div>
             </div>
@@ -26,11 +26,11 @@
                     Riwayat Pesanan Saya
                 </h4>
 
-                @if($transactions->isEmpty())
+                @if($transaksi->isEmpty())
                     <div class="text-center" style="padding: 60px 0;">
                         <i class="fa fa-shopping-bag" style="font-size:60px; color:#ccc;"></i>
                         <h5 style="color:#999; margin-top:20px;">Belum ada pesanan</h5>
-                        <a href="{{ route('shop') }}" class="primary-btn" style="margin-top:20px;">Mulai Belanja</a>
+                        <a href="{{ route('toko') }}" class="primary-btn" style="margin-top:20px;">Mulai Belanja</a>
                     </div>
                 @else
                 <div class="shop__cart__table">
@@ -45,26 +45,26 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($transactions as $transaction)
+                            @foreach($transaksi as $t)
                             <tr>
-                                <td><strong>{{ $transaction->invoice_number }}</strong></td>
-                                <td>{{ $transaction->created_at->format('d M Y, H:i') }}</td>
-                                <td>{{ $transaction->formatted_total }}</td>
+                                <td><strong>{{ $t->nomor_invoice }}</strong></td>
+                                <td>{{ $t->created_at->format('d M Y, H:i') }}</td>
+                                <td>{{ $t->total_format }}</td>
                                 <td>
-                                    <span class="badge badge-{{ $transaction->status_badge }}"
+                                    <span class="badge badge-{{ $t->badge_status }}"
                                           style="padding:5px 10px; border-radius:4px; font-size:12px;
-                                                 color:#fff; background:{{ match($transaction->status) {
+                                                 color:#fff; background:{{ match($t->status) {
                                                     'pending' => '#ffc107',
                                                     'processing' => '#17a2b8',
                                                     'completed' => '#28a745',
                                                     'cancelled' => '#dc3545',
                                                     default => '#6c757d'
                                                  } }};">
-                                        {{ $transaction->status_label }}
+                                        {{ $t->label_status }}
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="{{ route('transactions.show', $transaction->invoice_number) }}"
+                                    <a href="{{ route('transaksi.tampilkan', $t->nomor_invoice) }}"
                                        class="primary-btn" style="padding:8px 15px; font-size:13px;">
                                         Detail
                                     </a>
@@ -75,9 +75,9 @@
                     </table>
                 </div>
 
-                @if($transactions->hasPages())
+                @if($transaksi->hasPages())
                     <div class="text-center" style="margin-top:30px;">
-                        {{ $transactions->links() }}
+                        {{ $transaksi->links() }}
                     </div>
                 @endif
                 @endif

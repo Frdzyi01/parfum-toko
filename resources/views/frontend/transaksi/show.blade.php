@@ -1,5 +1,5 @@
 @extends('frontend.layout.app')
-@section('title', 'Detail Pesanan ' . $transaction->invoice_number . ' - Parfum Toko')
+@section('title', 'Detail Pesanan ' . $transaksi->nomor_invoice . ' - Parfum Toko')
 @section('content')
 
 <!-- Breadcrumb Begin -->
@@ -8,9 +8,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb__links">
-                    <a href="{{ route('home') }}"><i class="fa fa-home"></i> Home</a>
-                    <a href="{{ route('transactions.index') }}">Riwayat Pesanan</a>
-                    <span>{{ $transaction->invoice_number }}</span>
+                    <a href="{{ route('beranda') }}"><i class="fa fa-home"></i> Beranda</a>
+                    <a href="{{ route('transaksi.index') }}">Riwayat Pesanan</a>
+                    <span>{{ $transaksi->nomor_invoice }}</span>
                 </div>
             </div>
         </div>
@@ -39,20 +39,20 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($transaction->items as $item)
+                                @foreach($transaksi->item as $item)
                                 <tr>
                                     <td class="cart__product__item">
-                                        <img src="{{ $item->product->thumbnail_url }}"
-                                             alt="{{ $item->product->name }}"
+                                        <img src="{{ $item->produk->gambar_mini_url }}"
+                                             alt="{{ $item->produk->nama }}"
                                              style="width:60px; height:60px; object-fit:cover;" />
                                         <div class="cart__product__item__title">
-                                            <h6>{{ $item->product->name }}</h6>
+                                            <h6>{{ $item->produk->nama }}</h6>
                                         </div>
                                     </td>
                                     <td class="cart__price">
-                                        Rp {{ number_format($item->price, 0, ',', '.') }}
+                                        Rp {{ number_format($item->harga, 0, ',', '.') }}
                                     </td>
-                                    <td>{{ $item->qty }}</td>
+                                    <td>{{ $item->jumlah }}</td>
                                     <td class="cart__total">
                                         Rp {{ number_format($item->subtotal, 0, ',', '.') }}
                                     </td>
@@ -71,7 +71,7 @@
                         <ul>
                             <li>
                                 <span class="top__text">Invoice</span>
-                                <span class="top__text__right">{{ $transaction->invoice_number }}</span>
+                                <span class="top__text__right">{{ $transaksi->nomor_invoice }}</span>
                             </li>
                         </ul>
                     </div>
@@ -81,33 +81,33 @@
                                 Status
                                 <span>
                                     <span style="padding:3px 8px; border-radius:4px; font-size:12px; color:#fff;
-                                                 background:{{ match($transaction->status) {
+                                                 background:{{ match($transaksi->status) {
                                                     'pending' => '#ffc107',
                                                     'processing' => '#17a2b8',
                                                     'completed' => '#28a745',
                                                     'cancelled' => '#dc3545',
                                                     default => '#6c757d'
                                                  } }};">
-                                        {{ $transaction->status_label }}
+                                        {{ $transaksi->label_status }}
                                     </span>
                                 </span>
                             </li>
-                            <li>Tanggal <span>{{ $transaction->created_at->format('d M Y, H:i') }}</span></li>
-                            <li>Total <span>{{ $transaction->formatted_total }}</span></li>
+                            <li>Tanggal <span>{{ $transaksi->created_at->format('d M Y, H:i') }}</span></li>
+                            <li>Total <span>{{ $transaksi->total_format }}</span></li>
                         </ul>
                     </div>
 
-                    @if($transaction->notes)
+                    @if($transaksi->catatan)
                     <div style="margin-top:15px; padding:12px; background:#f9f9f9; border-radius:4px;">
                         <small style="color:#999;">Catatan:</small>
-                        <p style="margin:5px 0 0; color:#666;">{{ $transaction->notes }}</p>
+                        <p style="margin:5px 0 0; color:#666;">{{ $transaksi->catatan }}</p>
                     </div>
                     @endif
 
-                    <a href="{{ route('transactions.index') }}" class="site-btn" style="display:block; text-align:center; margin-top:20px;">
+                    <a href="{{ route('transaksi.index') }}" class="site-btn" style="display:block; text-align:center; margin-top:20px;">
                         Kembali ke Pesanan
                     </a>
-                    <a href="{{ route('shop') }}" class="primary-btn" style="display:block; text-align:center; margin-top:10px;">
+                    <a href="{{ route('toko') }}" class="primary-btn" style="display:block; text-align:center; margin-top:10px;">
                         Belanja Lagi
                     </a>
                 </div>

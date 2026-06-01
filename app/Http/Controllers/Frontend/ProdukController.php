@@ -41,7 +41,7 @@ class ProdukController extends Controller
             ->paginate(9)
             ->withQueryString();
 
-        return view('frontend.shop.shop', compact('produk'));
+        return view('frontend.toko.index', compact('produk'));
     }
 
     /**
@@ -60,6 +60,6 @@ class ProdukController extends Controller
             ->limit(4)
             ->get();
 
-        return view('frontend.product.product-details', compact('produk', 'produkTerkait'));
+        return view('frontend.produk.detail', compact('produk', 'produkTerkait'));
     }
 }

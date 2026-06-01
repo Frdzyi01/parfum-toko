@@ -24,7 +24,7 @@ class KeranjangController extends Controller
         $keranjang = Auth::user()->ambilAtauBuatKeranjang();
         $keranjang->load('item.produk');
 
-        return view('frontend.transaction.cart', compact('keranjang'));
+        return view('frontend.transaksi.cart', compact('keranjang'));
     }
 
     /**

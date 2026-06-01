@@ -28,7 +28,7 @@ class PemesananController extends Controller
             return redirect()->route('keranjang.index')->with('error', 'Keranjang Anda kosong. Silakan tambahkan produk terlebih dahulu.');
         }
 
-        return view('frontend.transaction.checkout', compact('keranjang'));
+        return view('frontend.transaksi.checkout', compact('keranjang'));
     }
 
     /**

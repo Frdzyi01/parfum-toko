@@ -6,7 +6,7 @@
           <div class="col-lg-4 col-md-6 col-sm-7">
             <div class="footer__about" style="font-family:'Inter', sans-serif;">
               <div class="footer__logo" style="margin-bottom:20px;">
-                <a href="{{ route('home') }}" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
+                <a href="{{ route('beranda') }}" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
                     <div style="width:36px; height:36px; border-radius:50%; border:2px solid #632c9b; display:flex; align-items:center; justify-content:center; background:#ffffff; color:#632c9b; font-family:'Cinzel', serif; font-weight:700; font-size:1.15rem;">R</div>
                     <div style="text-align:left;">
                         <div style="font-family:'Cinzel', serif; font-size:1.3rem; font-weight:700; color:#111111; letter-spacing:1px; line-height:1;">RANDO</div>
@@ -30,10 +30,10 @@
             <div class="footer__widget" style="font-family:'Inter', sans-serif;">
               <h6>Tautan Cepat</h6>
               <ul>
-                <li><a href="{{ route('home') }}">Beranda</a></li>
-                <li><a href="{{ route('shop') }}">Katalog Produk</a></li>
-                <li><a href="{{ route('home') }}#cara-belanja">Cara Belanja</a></li>
-                <li><a href="{{ route('home') }}#tentang-kami">Tentang Kami</a></li>
+                <li><a href="{{ route('beranda') }}">Beranda</a></li>
+                <li><a href="{{ route('toko') }}">Katalog Produk</a></li>
+                <li><a href="{{ route('beranda') }}#cara-belanja">Cara Belanja</a></li>
+                <li><a href="{{ route('beranda') }}#tentang-kami">Tentang Kami</a></li>
               </ul>
             </div>
           </div>
@@ -41,13 +41,13 @@
             <div class="footer__widget" style="font-family:'Inter', sans-serif;">
               <h6>Akun Anda</h6>
               <ul>
-                <li><a href="{{ route('transactions.index') }}">Pesanan Saya</a></li>
-                <li><a href="{{ route('cart.index') }}">Keranjang Belanja</a></li>
-                <li><a href="{{ route('checkout.index') }}">Checkout</a></li>
+                <li><a href="{{ route('transaksi.index') }}">Pesanan Saya</a></li>
+                <li><a href="{{ route('keranjang.index') }}">Keranjang Belanja</a></li>
+                <li><a href="{{ route('pemesanan.index') }}">Checkout</a></li>
                 @guest
-                <li><a href="{{ route('login') }}">Masuk Akun</a></li>
+                <li><a href="{{ route('masuk') }}">Masuk Akun</a></li>
                 @else
-                <li><a href="{{ route('transactions.index') }}">Profil Akun</a></li>
+                <li><a href="{{ route('transaksi.index') }}">Profil Akun</a></li>
                 @endguest
               </ul>
             </div>

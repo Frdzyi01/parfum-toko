@@ -24,7 +24,7 @@ class TransaksiController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('frontend.transaction.index', compact('transaksi'));
+        return view('frontend.transaksi.index', compact('transaksi'));
     }
 
     /**
@@ -39,6 +39,6 @@ class TransaksiController extends Controller
             ->where('nomor_invoice', $invoice)
             ->firstOrFail();
 
-        return view('frontend.transaction.show', compact('transaksi'));
+        return view('frontend.transaksi.show', compact('transaksi'));
     }
 }

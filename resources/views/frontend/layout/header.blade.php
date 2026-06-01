@@ -298,7 +298,7 @@
         <div class="row align-items-center">
             <!-- Logo Column -->
             <div class="col-xl-3 col-lg-3 col-md-4 col-8">
-                <a href="{{ route('home') }}" class="logo-container">
+                <a href="{{ route('beranda') }}" class="logo-container">
                     <div class="logo-badge">R</div>
                     <div class="logo-text">
                         <div class="logo-text-main">RANDO</div>
@@ -311,17 +311,17 @@
             <div class="col-xl-5 col-lg-5 d-none d-lg-block">
                 <nav class="nav-menu">
                     <ul>
-                        <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
-                            <a href="{{ route('home') }}">Beranda</a>
+                        <li class="{{ request()->routeIs('beranda') ? 'active' : '' }}">
+                            <a href="{{ route('beranda') }}">Beranda</a>
                         </li>
-                        <li class="{{ request()->routeIs('shop') ? 'active' : '' }}">
-                            <a href="{{ route('shop') }}">Katalog</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('home') }}#cara-belanja">Cara Belanja</a>
+                        <li class="{{ request()->routeIs('toko') ? 'active' : '' }}">
+                            <a href="{{ route('toko') }}">Katalog</a>
                         </li>
                         <li>
-                            <a href="{{ route('home') }}#tentang-kami">Tentang Kami</a>
+                            <a href="{{ route('beranda') }}#cara-belanja">Cara Belanja</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('beranda') }}#tentang-kami">Tentang Kami</a>
                         </li>
                     </ul>
                 </nav>
@@ -332,8 +332,8 @@
                 <div class="widgets-container">
                     <!-- Search Input Form -->
                     <div class="search-container d-none d-md-block">
-                        <form action="{{ route('shop') }}" method="GET" class="search-form">
-                            <input type="text" name="search" class="search-input" placeholder="Cari parfum..." value="{{ request('search') }}">
+                        <form action="{{ route('toko') }}" method="GET" class="search-form">
+                            <input type="text" name="cari" class="search-input" placeholder="Cari parfum..." value="{{ request('cari') }}">
                             <button type="submit" class="search-btn">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </button>
@@ -341,12 +341,12 @@
                     </div>
                     
                     <!-- Cart Link Widget -->
-                    <a href="{{ route('cart.index') }}" class="widget-link" title="Keranjang Belanja">
+                    <a href="{{ route('keranjang.index') }}" class="widget-link" title="Keranjang Belanja">
                         <i class="fa-solid fa-cart-shopping"></i>
                         @auth
                             @php
-                                $cartCount = auth()->user()->cart
-                                    ? auth()->user()->cart->items->sum('qty')
+                                $cartCount = auth()->user()->keranjang
+                                    ? auth()->user()->keranjang->item->sum('jumlah')
                                     : 0;
                             @endphp
                             @if($cartCount > 0)
@@ -357,7 +357,7 @@
                     
                     <!-- Transactions Link Widget -->
                     @auth
-                    <a href="{{ route('transactions.index') }}" class="widget-link" title="Pesanan Saya">
+                    <a href="{{ route('transaksi.index') }}" class="widget-link" title="Pesanan Saya">
                         <i class="fa-solid fa-bag-shopping"></i>
                     </a>
                     @endauth
@@ -365,22 +365,22 @@
                     <!-- User Profile Dropdown Widget -->
                     <div class="dropdown-wrapper">
                         @guest
-                            <a href="{{ route('login') }}" class="widget-link" title="Login / Register">
+                            <a href="{{ route('masuk') }}" class="widget-link" title="Login / Register">
                                 <i class="fa-solid fa-user"></i>
                             </a>
                         @else
                             <button class="user-dropdown-btn">
                                 <i class="fa-solid fa-user"></i>
-                                <span class="d-none d-xl-inline" style="font-size:0.85rem; color:#ffffff; font-weight: 500; margin-left: 5px;">{{ Str::limit(Auth::user()->name, 10) }}</span>
+                                <span class="d-none d-xl-inline" style="font-size:0.85rem; color:#ffffff; font-weight: 500; margin-left: 5px;">{{ Str::limit(Auth::user()->nama, 10) }}</span>
                             </button>
                             <div class="dropdown-menu">
-                                <a href="{{ route('transactions.index') }}" class="dropdown-item">Pesanan Saya</a>
+                                <a href="{{ route('transaksi.index') }}" class="dropdown-item">Pesanan Saya</a>
                                 <hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 4px 0;">
-                                <a href="{{ route('logout') }}" class="dropdown-item" 
+                                <a href="{{ route('keluar') }}" class="dropdown-item" 
                                    onclick="event.preventDefault(); document.getElementById('logout-form-header').submit();">
                                     Logout
                                 </a>
-                                <form id="logout-form-header" action="{{ route('logout') }}" method="POST" style="display:none;">
+                                <form id="logout-form-header" action="{{ route('keluar') }}" method="POST" style="display:none;">
                                     @csrf
                                 </form>
                             </div>

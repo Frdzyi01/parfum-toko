@@ -12,12 +12,12 @@ class AdminProdukController extends Controller
     public function index()
     {
         $produk = Produk::latest()->paginate(10);
-        return view('backend.products.index', compact('produk'));
+        return view('backend.produk.index', compact('produk'));
     }
 
     public function buat()
     {
-        return view('backend.products.create');
+        return view('backend.produk.buat');
     }
 
     public function simpan(Request $request)
@@ -45,7 +45,7 @@ class AdminProdukController extends Controller
 
     public function ubah(Produk $produk)
     {
-        return view('backend.products.edit', compact('produk'));
+        return view('backend.produk.ubah', compact('produk'));
     }
 
     public function perbarui(Request $request, Produk $produk)

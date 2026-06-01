@@ -14,7 +14,7 @@ class AdminTransaksiController extends Controller
 
         if ($tab === 'semua_pesanan') {
             $transaksi = Transaksi::with('pengguna')->latest()->paginate(10)->withQueryString();
-            return view('backend.transactions.index', compact('transaksi', 'tab'));
+            return view('backend.transaksi.index', compact('transaksi', 'tab'));
         }
 
         // Date range report filters
@@ -49,7 +49,7 @@ class AdminTransaksiController extends Controller
             ->orderBy('tanggal', 'desc')
             ->get();
 
-        return view('backend.transactions.index', compact(
+        return view('backend.transaksi.index', compact(
             'dataLaporan',
             'totalTransaksi',
             'totalPendapatan',
@@ -63,7 +63,7 @@ class AdminTransaksiController extends Controller
     public function tampilkan(Transaksi $transaksi)
     {
         $transaksi->load('item.produk', 'pengguna');
-        return view('backend.transactions.show', compact('transaksi'));
+        return view('backend.transaksi.show', compact('transaksi'));
     }
 
     public function perbarui(Request $request, Transaksi $transaksi)

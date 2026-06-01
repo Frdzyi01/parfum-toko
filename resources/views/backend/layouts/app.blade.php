@@ -127,7 +127,7 @@
 
             <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
                 <div class="app-brand demo" style="padding-left: 20px;">
-                    <a href="{{ route('admin.dashboard') }}" class="app-brand-link" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+                    <a href="{{ route('admin.dasbor') }}" class="app-brand-link" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
                         <span class="app-brand-logo demo" style="width:36px; height:36px; border-radius:50%; border:2px solid #ffffff; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.15); color:#ffffff; font-family:'Cinzel', serif; font-weight:700; font-size:1.15rem;">
                             R
                         </span>
@@ -146,24 +146,24 @@
 
                 <ul class="menu-inner py-1">
                     <!-- Dashboard -->
-                    <li class="menu-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                        <a href="{{ route('admin.dashboard') }}" class="menu-link">
+                    <li class="menu-item {{ request()->routeIs('admin.dasbor') ? 'active' : '' }}">
+                        <a href="{{ route('admin.dasbor') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div>Dashboard</div>
                         </a>
                     </li>
 
                     <!-- Produk -->
-                    <li class="menu-item {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
-                        <a href="{{ route('admin.products.index') }}" class="menu-link">
+                    <li class="menu-item {{ request()->routeIs('admin.produk.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.produk.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-box"></i>
                             <div>Produk</div>
                         </a>
                     </li>
 
                     <!-- Transaksi -->
-                    <li class="menu-item {{ request()->routeIs('admin.transactions.*') && request('tab') == 'all_orders' ? 'active' : '' }}">
-                        <a href="{{ route('admin.transactions.index') }}?tab=all_orders" class="menu-link">
+                    <li class="menu-item {{ request()->routeIs('admin.transaksi.*') && request('tab') == 'all_orders' ? 'active' : '' }}">
+                        <a href="{{ route('admin.transaksi.index') }}?tab=all_orders" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-receipt"></i>
                             <div>Transaksi</div>
                         </a>
@@ -178,8 +178,8 @@
                     </li>
 
                     <!-- Laporan (Active when on transactions index without tab=all_orders) -->
-                    <li class="menu-item {{ request()->routeIs('admin.transactions.index') && request('tab') != 'all_orders' ? 'active' : '' }}">
-                        <a href="{{ route('admin.transactions.index') }}" class="menu-link">
+                    <li class="menu-item {{ request()->routeIs('admin.transaksi.index') && request('tab') != 'all_orders' ? 'active' : '' }}">
+                        <a href="{{ route('admin.transaksi.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-bar-chart-alt-2"></i>
                             <div>Laporan</div>
                         </a>
@@ -195,11 +195,11 @@
 
                     <!-- Logout -->
                     <li class="menu-item">
-                        <a href="{{ route('admin.logout') }}" class="menu-link" onclick="event.preventDefault(); document.getElementById('logout-form-sidebar').submit();">
+                        <a href="{{ route('admin.keluar') }}" class="menu-link" onclick="event.preventDefault(); document.getElementById('logout-form-sidebar').submit();">
                             <i class="menu-icon tf-icons bx bx-power-off"></i>
                             <div>Logout</div>
                         </a>
-                        <form id="logout-form-sidebar" action="{{ route('admin.logout') }}" method="POST" style="display:none;">
+                        <form id="logout-form-sidebar" action="{{ route('admin.keluar') }}" method="POST" style="display:none;">
                             @csrf
                         </form>
                     </li>
@@ -266,8 +266,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
-                                                    <h6 class="mb-0">{{ auth()->user()->name ?? 'Admin' }}</h6>
-                                                    <small class="text-body-secondary">{{ ucfirst(auth()->user()->role ?? 'Admin') }}</small>
+                                                    <h6 class="mb-0">{{ auth()->user()->nama ?? 'Admin' }}</h6>
+                                                    <small class="text-body-secondary">{{ ucfirst(auth()->user()->peran ?? 'Admin') }}</small>
                                                 </div>
                                             </div>
                                         </a>
@@ -284,9 +284,9 @@
                                         <div class="dropdown-divider my-1"></div>
                                     </li>
                                     <li>
-                                        <form method="POST" action="{{ route('admin.logout') }}">
+                                        <form method="POST" action="{{ route('admin.keluar') }}">
                                             @csrf
-                                            <a class="dropdown-item" href="route('admin.logout')" onclick="event.preventDefault(); this.closest('form').submit();">
+                                            <a class="dropdown-item" href="{{ route('admin.keluar') }}" onclick="event.preventDefault(); this.closest('form').submit();">
                                                 <i class="icon-base bx bx-power-off icon-md me-3"></i><span>Log Out</span>
                                             </a>
                                         </form>

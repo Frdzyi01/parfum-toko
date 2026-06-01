@@ -476,7 +476,7 @@
         <!-- Left Section: Brand & Slogan -->
         <div class="brand-section">
             <div class="brand-content">
-                <a href="{{ route('home') }}" style="text-decoration: none;">
+                <a href="{{ route('beranda') }}" style="text-decoration: none;">
                     <div class="brand-logo-container">
                         <div class="logo-rando">RANDO</div>
                         <div class="logo-parfum">PARFUM</div>
@@ -497,7 +497,7 @@
         <!-- Right Section: Login Form -->
         <div class="form-section">
             <!-- Back to Home Link (Top Right) -->
-            <a href="{{ route('home') }}" class="back-to-home-top">
+            <a href="{{ route('beranda') }}" class="back-to-home-top">
                 <i class="fa-solid fa-house"></i> Halaman Utama
             </a>
 
@@ -514,7 +514,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('login') }}" id="login-form">
+            <form method="POST" action="{{ route('masuk') }}" id="login-form">
                 @csrf
                 
                 <!-- Email Field -->
@@ -561,9 +561,9 @@
 
             <!-- Footer Links -->
             <div class="register-footer">
-                Belum punya akun? <a href="{{ route('register') }}" class="register-link">Daftar di sini</a>
+                Belum punya akun? <a href="{{ route('daftar') }}" class="register-link">Daftar di sini</a>
                 <div style="margin-top: 15px;">
-                    <a href="{{ route('home') }}" class="back-home-link">
+                    <a href="{{ route('beranda') }}" class="back-home-link">
                         <i class="fa-solid fa-arrow-left"></i> Kembali ke Halaman Utama
                     </a>
                 </div>

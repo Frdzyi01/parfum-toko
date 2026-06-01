@@ -1,5 +1,5 @@
 @extends('frontend.layout.app')
-@section('title', 'Shop - Parfum Toko')
+@section('title', 'Toko - Parfum Toko')
 @section('content')
 
 <style>
@@ -372,8 +372,8 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb__links" style="font-family:'Inter', sans-serif;">
-                    <a href="{{ route('home') }}" style="color:#64748b; font-weight:500; text-decoration:none;"><i class="fa fa-home" style="color:#632c9b; margin-right:4px;"></i> Home</a>
-                    <span style="color:#0f172a; font-weight:600; margin-left: 8px;">/ &nbsp;Shop</span>
+                    <a href="{{ route('beranda') }}" style="color:#64748b; font-weight:500; text-decoration:none;"><i class="fa fa-home" style="color:#632c9b; margin-right:4px;"></i> Beranda</a>
+                    <span style="color:#0f172a; font-weight:600; margin-left: 8px;">/ &nbsp;Toko</span>
                 </div>
             </div>
         </div>
@@ -387,10 +387,10 @@
         <div class="row">
             <!-- Left Column: Sidebar Filters -->
             <div class="col-lg-3 col-md-4">
-                <form action="{{ route('shop') }}" method="GET" id="filter-form">
+                <form action="{{ route('toko') }}" method="GET" id="filter-form">
                     <!-- Preserve Active Search Query -->
-                    @if(request('search'))
-                        <input type="hidden" name="search" value="{{ request('search') }}">
+                    @if(request('cari'))
+                        <input type="hidden" name="cari" value="{{ request('cari') }}">
                     @endif
 
                     <div class="shop-sidebar-card">
@@ -398,7 +398,7 @@
                         <h4 class="shop-sidebar-title">Kategori</h4>
                         
                         @php
-                            $selectedCategories = (array) request('category', ['Semua']);
+                            $selectedCategories = (array) request('kategori', ['Semua']);
                             if (empty($selectedCategories)) {
                                 $selectedCategories = ['Semua'];
                             }
@@ -409,7 +409,7 @@
                             <!-- Category: Semua -->
                             <label class="custom-checkbox-container">
                                 Semua
-                                <input type="checkbox" name="category[]" value="Semua" id="cat-semua" 
+                                <input type="checkbox" name="kategori[]" value="Semua" id="cat-semua" 
                                     {{ in_array('Semua', $selectedCategories) ? 'checked' : '' }}>
                                 <span class="custom-checkbox-checkmark"></span>
                             </label>
@@ -417,7 +417,7 @@
                             <!-- Category: Parfum Pria -->
                             <label class="custom-checkbox-container">
                                 Parfum Pria
-                                <input type="checkbox" name="category[]" value="Parfum Pria" class="cat-checkbox"
+                                <input type="checkbox" name="kategori[]" value="Parfum Pria" class="cat-checkbox"
                                     {{ in_array('Parfum Pria', $selectedCategories) ? 'checked' : '' }}>
                                 <span class="custom-checkbox-checkmark"></span>
                             </label>
@@ -425,7 +425,7 @@
                             <!-- Category: Parfum Wanita -->
                             <label class="custom-checkbox-container">
                                 Parfum Wanita
-                                <input type="checkbox" name="category[]" value="Parfum Wanita" class="cat-checkbox"
+                                <input type="checkbox" name="kategori[]" value="Parfum Wanita" class="cat-checkbox"
                                     {{ in_array('Parfum Wanita', $selectedCategories) ? 'checked' : '' }}>
                                 <span class="custom-checkbox-checkmark"></span>
                             </label>
@@ -433,7 +433,7 @@
                             <!-- Category: Unisex -->
                             <label class="custom-checkbox-container">
                                 Unisex
-                                <input type="checkbox" name="category[]" value="Unisex" class="cat-checkbox"
+                                <input type="checkbox" name="kategori[]" value="Unisex" class="cat-checkbox"
                                     {{ in_array('Unisex', $selectedCategories) ? 'checked' : '' }}>
                                 <span class="custom-checkbox-checkmark"></span>
                             </label>
@@ -441,7 +441,7 @@
                             <!-- Category: Mini Size -->
                             <label class="custom-checkbox-container">
                                 Mini Size
-                                <input type="checkbox" name="category[]" value="Mini Size" class="cat-checkbox"
+                                <input type="checkbox" name="kategori[]" value="Mini Size" class="cat-checkbox"
                                     {{ in_array('Mini Size', $selectedCategories) ? 'checked' : '' }}>
                                 <span class="custom-checkbox-checkmark"></span>
                             </label>
@@ -461,8 +461,8 @@
                             <div id="custom-price-slider"></div>
                             
                             <!-- Hidden inputs to submit min/max price values -->
-                            <input type="hidden" name="min_price" id="min-price-input" value="{{ request('min_price', 0) }}">
-                            <input type="hidden" name="max_price" id="max-price-input" value="{{ request('max_price', 5000000) }}">
+                            <input type="hidden" name="harga_min" id="min-price-input" value="{{ request('harga_min', 0) }}">
+                            <input type="hidden" name="harga_max" id="max-price-input" value="{{ request('harga_max', 5000000) }}">
                         </div>
 
                         <!-- Filter Submit Button -->
@@ -475,53 +475,53 @@
             <div class="col-lg-9 col-md-8">
                 <!-- Dynamic Header Title -->
                 <h2 class="catalog-header-title">
-                    @if(request('search'))
-                        Hasil Pencarian untuk "{{ request('search') }}"
+                    @if(request('cari'))
+                        Hasil Pencarian untuk "{{ request('cari') }}"
                     @else
                         Semua Produk
                     @endif
                 </h2>
 
                 <div class="row">
-                    @forelse($products as $product)
+                    @forelse($produk as $item)
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="shop-product-card">
                             <!-- Stock Out Badge -->
-                            @if($product->stock == 0)
+                            @if($item->stok == 0)
                                 <div class="badge-stockout">Habis</div>
                             @endif
 
                             <!-- Product Image Wrap -->
                             <div class="shop-product-image-wrap">
-                                <img src="{{ $product->thumbnail_url }}" alt="{{ $product->name }}" class="shop-product-image">
+                                <img src="{{ $item->gambar_mini_url }}" alt="{{ $item->nama }}" class="shop-product-image">
                             </div>
 
                             <!-- Product Description Info -->
                             <div class="shop-product-info">
-                                <a href="{{ route('product.show', $product->slug) }}" class="shop-product-name">
-                                    {{ $product->name }}
+                                <a href="{{ route('produk.tampilkan', $item->slug) }}" class="shop-product-name">
+                                    {{ $item->nama }}
                                 </a>
                                 <div class="shop-product-category">
-                                    {{ $product->category ?? 'Parfum' }}
+                                    {{ $item->kategori ?? 'Parfum' }}
                                 </div>
                                 <div class="shop-product-price">
-                                    {{ $product->formatted_price }}
+                                    {{ $item->harga_format }}
                                 </div>
                             </div>
 
                             <!-- Double Buttons: Lihat Detail & Beli Sekarang -->
                             <div class="shop-product-btn-group">
                                 <!-- View Details Button -->
-                                <a href="{{ route('product.show', $product->slug) }}" class="shop-product-btn-outline">
+                                <a href="{{ route('produk.tampilkan', $item->slug) }}" class="shop-product-btn-outline">
                                     Lihat <br> Detail
                                 </a>
 
                                 <!-- Buy Now Button -->
-                                @if($product->stock > 0)
-                                <form action="{{ route('cart.add', $product->id) }}" method="POST" style="margin:0; flex:1;">
+                                @if($item->stok > 0)
+                                <form action="{{ route('keranjang.tambah', $item->id) }}" method="POST" style="margin:0; flex:1;">
                                     @csrf
-                                    <input type="hidden" name="qty" value="1">
-                                    <input type="hidden" name="buy_now" value="1">
+                                    <input type="hidden" name="jumlah" value="1">
+                                    <input type="hidden" name="beli_sekarang" value="1">
                                     <button type="submit" class="shop-product-btn-solid" style="width:100%;">
                                         Beli Sekarang
                                     </button>
@@ -546,10 +546,10 @@
                     @endforelse
 
                     <!-- Pagination Navigation -->
-                    @if($products->hasPages())
+                    @if($produk->hasPages())
                     <div class="col-lg-12 pagination-custom-container">
                         <div class="pagination__option">
-                            {{ $products->links('vendor.pagination.simple') }}
+                            {{ $produk->links('vendor.pagination.simple') }}
                         </div>
                     </div>
                     @endif

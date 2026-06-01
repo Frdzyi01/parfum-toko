@@ -298,7 +298,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb__links" style="font-family:'Inter', sans-serif;">
-                    <a href="{{ route('home') }}" style="color:#64748b; font-weight:500; text-decoration:none;"><i class="fa fa-home" style="color:#632c9b; margin-right:4px;"></i> Home</a>
+                    <a href="{{ route('beranda') }}" style="color:#64748b; font-weight:500; text-decoration:none;"><i class="fa fa-home" style="color:#632c9b; margin-right:4px;"></i> Beranda</a>
                     <span style="color:#0f172a; font-weight:600; margin-left: 8px;">/ &nbsp;Keranjang Belanja</span>
                 </div>
             </div>
@@ -310,13 +310,13 @@
 <!-- Shop Cart Section Begin -->
 <section class="cart-section-custom">
     <div class="container">
-        @if($cart->items->isEmpty())
+        @if($keranjang->item->isEmpty())
             <div class="row justify-content-center">
                 <div class="col-lg-8 text-center" style="background:#ffffff; border-radius:16px; border:1px solid #e2e8f0; padding:80px 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.015);">
                     <i class="fa-solid fa-cart-shopping" style="font-size:55px; color:#cbd5e1; margin-bottom: 20px;"></i>
                     <h4 style="color:#475569; font-weight:700; margin-bottom:8px;">Keranjang Belanja Kosong</h4>
                     <p style="color:#64748b; font-size:0.92rem; max-width:400px; margin:0 auto; margin-bottom: 24px;">Anda belum menambahkan parfum ke keranjang Anda.</p>
-                    <a href="{{ route('shop') }}" class="btn-continue-shopping" style="border-color:#632c9b; color:#ffffff; background:#632c9b; box-shadow:0 4px 10px rgba(99, 44, 155, 0.15);">
+                    <a href="{{ route('toko') }}" class="btn-continue-shopping" style="border-color:#632c9b; color:#ffffff; background:#632c9b; box-shadow:0 4px 10px rgba(99, 44, 155, 0.15);">
                         Belanja Sekarang
                     </a>
                 </div>
@@ -340,23 +340,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($cart->items as $item)
+                                @foreach($keranjang->item as $item)
                                 <tr>
                                     <!-- Product Details Cell -->
                                     <td>
                                         <div class="cart-product-cell">
                                             <div class="cart-product-img-wrap">
-                                                <img src="{{ $item->product->thumbnail_url }}" alt="{{ $item->product->name }}" class="cart-product-img" />
+                                                <img src="{{ $item->produk->gambar_mini_url }}" alt="{{ $item->produk->nama }}" class="cart-product-img" />
                                             </div>
                                             <div>
-                                                <a href="{{ route('product.show', $item->product->slug) }}" class="cart-product-name">
-                                                    {{ $item->product->name }}
+                                                <a href="{{ route('produk.tampilkan', $item->produk->slug) }}" class="cart-product-name">
+                                                    {{ $item->produk->nama }}
                                                 </a>
                                                 
                                                 @php
                                                     // Determine size statically based on product name/ID to match the mockup
                                                     $size = '100 ml';
-                                                    if (Str::contains(Str::lower($item->product->name), ['love spell', 'mini', 'jazz club'])) {
+                                                    if (Str::contains(Str::lower($item->produk->nama), ['love spell', 'mini', 'jazz club'])) {
                                                         $size = '50 ml';
                                                     }
                                                 @endphp
@@ -367,17 +367,17 @@
                                     
                                     <!-- Price Cell -->
                                     <td class="cart-price-cell">
-                                        {{ $item->product->formatted_price }}
+                                        {{ $item->produk->harga_format }}
                                     </td>
                                     
                                     <!-- Qty Selector Cell -->
                                     <td>
-                                        <form action="{{ route('cart.update', $item->product_id) }}" method="POST" id="qty-form-{{ $item->id }}" style="margin: 0;">
+                                        <form action="{{ route('keranjang.perbarui', $item->produk_id) }}" method="POST" id="qty-form-{{ $item->id }}" style="margin: 0;">
                                             @csrf
                                             <div class="custom-qty-wrapper">
                                                 <button type="button" class="qty-btn" onclick="updateQty({{ $item->id }}, -1)">-</button>
-                                                <input type="number" name="qty" id="qty-input-{{ $item->id }}" value="{{ $item->qty }}" 
-                                                       min="1" max="{{ $item->product->stock }}" class="qty-input" readonly>
+                                                <input type="number" name="jumlah" id="qty-input-{{ $item->id }}" value="{{ $item->jumlah }}" 
+                                                       min="1" max="{{ $item->produk->stok }}" class="qty-input" readonly>
                                                 <button type="button" class="qty-btn" onclick="updateQty({{ $item->id }}, 1)">+</button>
                                             </div>
                                         </form>
@@ -390,8 +390,8 @@
                                     
                                     <!-- Action Button Cell -->
                                     <td style="text-align: center;">
-                                        <form action="{{ route('cart.remove', $item->product_id) }}" method="POST"
-                                              onsubmit="return confirm('Hapus {{ $item->product->name }} dari keranjang?')">
+                                        <form action="{{ route('keranjang.hapus', $item->produk_id) }}" method="POST"
+                                              onsubmit="return confirm('Hapus {{ $item->produk->nama }} dari keranjang?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="cart-remove-btn" title="Hapus dari Keranjang">
@@ -407,7 +407,7 @@
 
                     <!-- Continue Shopping Button -->
                     <div style="margin-top: 10px;">
-                        <a href="{{ route('shop') }}" class="btn-continue-shopping">
+                        <a href="{{ route('toko') }}" class="btn-continue-shopping">
                             <i class="fa-solid fa-chevron-left" style="font-size:0.75rem;"></i> Lanjut Belanja
                         </a>
                     </div>
@@ -417,7 +417,7 @@
             <!-- Right Column: Order Summary Panel -->
             <div class="col-lg-4">
                 @php
-                    $subtotal = $cart->getTotal();
+                    $subtotal = $keranjang->ambilTotal();
                     $shipping = 15000; // Static Shipping cost (Ongkir Rp 15.000)
                     $total = $subtotal + $shipping;
                 @endphp
@@ -440,7 +440,7 @@
                         <span>Rp {{ number_format($total, 0, ',', '.') }}</span>
                     </div>
                     
-                    <a href="{{ route('checkout.index') }}" class="btn-checkout">Checkout</a>
+                    <a href="{{ route('pemesanan.index') }}" class="btn-checkout">Checkout</a>
                 </div>
             </div>
         </div>

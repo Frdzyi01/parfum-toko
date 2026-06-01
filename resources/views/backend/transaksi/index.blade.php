@@ -200,19 +200,19 @@
 <div class="container-fluid p-0">
     <!-- Tab Navigation -->
     <ul class="nav-tabs-custom d-print-none">
-        <li class="{{ $tab == 'report' ? 'active' : '' }}">
-            <a href="{{ route('admin.transactions.index') }}">
+        <li class="{{ $tab == 'laporan' ? 'active' : '' }}">
+            <a href="{{ route('admin.transaksi.index') }}">
                 <i class="bx bx-bar-chart-alt-2 me-1"></i> Laporan Penjualan
             </a>
         </li>
-        <li class="{{ $tab == 'all_orders' ? 'active' : '' }}">
-            <a href="{{ route('admin.transactions.index') }}?tab=all_orders">
-                <i class="bx bx-receipt me-1"></i> Daftar Transaksi (Orders)
+        <li class="{{ $tab == 'semua_pesanan' ? 'active' : '' }}">
+            <a href="{{ route('admin.transaksi.index') }}?tab=semua_pesanan">
+                <i class="bx bx-receipt me-1"></i> Daftar Transaksi (Pesanan)
             </a>
         </li>
     </ul>
 
-    @if($tab == 'report')
+    @if($tab == 'laporan')
         <!-- LAPORAN PENJUALAN VIEW -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h4 class="mb-0" style="font-family:'Inter', sans-serif; font-weight: 700; color: #0f172a;">Laporan Penjualan</h4>
@@ -221,22 +221,22 @@
         <!-- Filter Card -->
         <div class="card filter-card mb-4 d-print-none">
             <div class="card-body">
-                <form action="{{ route('admin.transactions.index') }}" method="GET">
+                <form action="{{ route('admin.transaksi.index') }}" method="GET">
                     <div class="d-flex justify-content-between align-items-end flex-wrap gap-3">
                         <div class="filter-form-group">
                             <div class="filter-input-wrapper">
                                 <span class="filter-label">Dari Tanggal</span>
-                                <input type="date" name="start_date" class="filter-control" value="{{ $startDate->format('Y-m-d') }}">
+                                <input type="date" name="tanggal_mulai" class="filter-control" value="{{ $tanggalMulai->format('Y-m-d') }}">
                             </div>
                             <div class="filter-input-wrapper">
                                 <span class="filter-label">Sampai Tanggal</span>
-                                <input type="date" name="end_date" class="filter-control" value="{{ $endDate->format('Y-m-d') }}">
+                                <input type="date" name="tanggal_selesai" class="filter-control" value="{{ $tanggalSelesai->format('Y-m-d') }}">
                             </div>
                             <button type="submit" class="btn-purple">Tampilkan</button>
                         </div>
                         <div>
                             <button type="button" onclick="window.print()" class="btn-purple">
-                                <i class="bx bx-printer me-1"></i> Export PDF
+                                <i class="bx bx-printer me-1"></i> Ekspor PDF
                             </button>
                         </div>
                     </div>
@@ -248,15 +248,15 @@
         <div class="stats-grid stats-container">
             <div class="stats-card">
                 <div class="stats-title">Total Transaksi</div>
-                <div class="stats-value">{{ $totalTransactions }}</div>
+                <div class="stats-value">{{ $totalTransaksi }}</div>
             </div>
             <div class="stats-card">
                 <div class="stats-title">Total Pendapatan</div>
-                <div class="stats-value">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</div>
+                <div class="stats-value">Rp {{ number_format($totalPendapatan, 0, ',', '.') }}</div>
             </div>
             <div class="stats-card">
                 <div class="stats-title">Rata-rata Transaksi</div>
-                <div class="stats-value">Rp {{ number_format($averageTransaction, 0, ',', '.') }}</div>
+                <div class="stats-value">Rp {{ number_format($rataRataTransaksi, 0, ',', '.') }}</div>
             </div>
         </div>
 
@@ -273,12 +273,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($reportData as $index => $row)
+                        @forelse($dataLaporan as $index => $row)
                         <tr style="border-bottom: 1px solid #f1f5f9;">
                             <td style="padding: 16px 24px; font-weight: 500; border: none;">{{ $index + 1 }}</td>
-                            <td style="padding: 16px 24px; font-weight: 500; border: none;">{{ \Carbon\Carbon::parse($row->date)->format('d/m/Y') }}</td>
-                            <td style="padding: 16px 24px; font-weight: 500; text-align: center; border: none;">{{ $row->count }}</td>
-                            <td style="padding: 16px 24px; font-weight: 600; text-align: right; color: #632c9b; border: none;">Rp {{ number_format($row->revenue, 0, ',', '.') }}</td>
+                            <td style="padding: 16px 24px; font-weight: 500; border: none;">{{ \Carbon\Carbon::parse($row->tanggal)->format('d/m/Y') }}</td>
+                            <td style="padding: 16px 24px; font-weight: 500; text-align: center; border: none;">{{ $row->jumlah }}</td>
+                            <td style="padding: 16px 24px; font-weight: 600; text-align: right; color: #632c9b; border: none;">Rp {{ number_format($row->pendapatan, 0, ',', '.') }}</td>
                         </tr>
                         @empty
                         <tr>
@@ -316,11 +316,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($transactions as $transaction)
+                        @forelse($transaksi as $t)
                         <tr style="border-bottom: 1px solid #f1f5f9;">
-                            <td style="padding: 16px 24px; border: none;"><strong>{{ $transaction->invoice_number }}</strong></td>
-                            <td style="padding: 16px 24px; border: none;">{{ $transaction->user->name ?? 'Guest' }}</td>
-                            <td style="padding: 16px 24px; font-weight: 600; color: #632c9b; border: none;">Rp {{ number_format($transaction->total, 0, ',', '.') }}</td>
+                            <td style="padding: 16px 24px; border: none;"><strong>{{ $t->nomor_invoice }}</strong></td>
+                            <td style="padding: 16px 24px; border: none;">{{ $t->pengguna->nama ?? 'Guest' }}</td>
+                            <td style="padding: 16px 24px; font-weight: 600; color: #632c9b; border: none;">Rp {{ number_format($t->total, 0, ',', '.') }}</td>
                             <td style="padding: 16px 24px; border: none;">
                                 @php
                                     $statusClass = [
@@ -329,14 +329,20 @@
                                         'completed' => 'bg-label-success',
                                         'cancelled' => 'bg-label-danger'
                                     ];
+                                    $statusLabel = [
+                                        'pending' => 'Tertunda',
+                                        'processing' => 'Diproses',
+                                        'completed' => 'Selesai',
+                                        'cancelled' => 'Dibatalkan'
+                                    ];
                                 @endphp
-                                <span class="badge {{ $statusClass[$transaction->status] ?? 'bg-label-secondary' }}">
-                                    {{ ucfirst($transaction->status) }}
+                                <span class="badge {{ $statusClass[$t->status] ?? 'bg-label-secondary' }}">
+                                    {{ $statusLabel[$t->status] ?? ucfirst($t->status) }}
                                 </span>
                             </td>
-                            <td style="padding: 16px 24px; border: none;">{{ $transaction->created_at->format('d M Y H:i') }}</td>
+                            <td style="padding: 16px 24px; border: none;">{{ $t->created_at->format('d M Y H:i') }}</td>
                             <td style="padding: 16px 24px; text-align: center; border: none;">
-                                <a href="{{ route('admin.transactions.show', $transaction->id) }}" class="btn btn-sm btn-outline-primary" style="border-radius: 8px;">
+                                <a href="{{ route('admin.transaksi.tampilkan', $t->id) }}" class="btn btn-sm btn-outline-primary" style="border-radius: 8px;">
                                     <i class="bx bx-show-alt me-1"></i> Detail
                                 </a>
                             </td>
@@ -350,7 +356,7 @@
                 </table>
             </div>
             <div class="card-footer" style="background-color: transparent; border-top: 1px solid #f1f5f9;">
-                {{ $transactions->appends(['tab' => 'all_orders'])->links() }}
+                {{ $transaksi->appends(['tab' => 'semua_pesanan'])->links() }}
             </div>
         </div>
     @endif

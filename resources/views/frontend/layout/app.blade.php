@@ -47,10 +47,10 @@
       <ul class="offcanvas__widget">
         <li><span class="icon_search search-switch"></span></li>
         <li>
-          <a href="{{ route('cart.index') }}">
+          <a href="{{ route('keranjang.index') }}">
             <span class="icon_bag_alt"></span>
             @auth
-              @php $cartCount = auth()->user()->cart ? auth()->user()->cart->items->sum('qty') : 0; @endphp
+              @php $cartCount = auth()->user()->keranjang ? auth()->user()->keranjang->item->sum('jumlah') : 0; @endphp
               @if($cartCount > 0)
                 <div class="tip">{{ $cartCount }}</div>
               @endif
@@ -59,19 +59,19 @@
         </li>
       </ul>
       <div class="offcanvas__logo">
-        <a href="{{ route('home') }}"><img src="{{ asset('template-landing/img/logo.png') }}" alt="Parfum Toko" /></a>
+        <a href="{{ route('beranda') }}"><img src="{{ asset('template-landing/img/logo.png') }}" alt="Parfum Toko" /></a>
       </div>
       <div id="mobile-menu-wrap"></div>
       <div class="offcanvas__auth">
         @guest
-          <a href="{{ route('login') }}">Login</a>
-          <a href="{{ route('register') }}">Register</a>
+          <a href="{{ route('masuk') }}">Login</a>
+          <a href="{{ route('daftar') }}">Register</a>
         @endguest
         @auth
-          <a href="{{ route('transactions.index') }}">Pesanan Saya</a>
-          <a href="{{ route('logout') }}"
+          <a href="{{ route('transaksi.index') }}">Pesanan Saya</a>
+          <a href="{{ route('keluar') }}"
              onclick="event.preventDefault(); document.getElementById('logout-form-mobile').submit();">Logout</a>
-          <form id="logout-form-mobile" action="{{ route('logout') }}" method="POST" style="display:none;">
+          <form id="logout-form-mobile" action="{{ route('keluar') }}" method="POST" style="display:none;">
             @csrf
           </form>
         @endauth

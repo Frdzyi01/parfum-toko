@@ -166,7 +166,7 @@
         <div class="dashboard-stats-card">
             <div class="stats-card-info">
                 <span class="stats-card-label">Total Produk</span>
-                <span class="stats-card-value">{{ $totalProducts }}</span>
+                <span class="stats-card-value">{{ $totalProduk }}</span>
                 <span class="stats-card-subtext">Produk tersedia</span>
             </div>
             <div class="stats-card-icon-wrapper icon-wrapper-purple">
@@ -178,7 +178,7 @@
         <div class="dashboard-stats-card">
             <div class="stats-card-info">
                 <span class="stats-card-label">Total Transaksi</span>
-                <span class="stats-card-value">{{ $totalOrders }}</span>
+                <span class="stats-card-value">{{ $totalPesanan }}</span>
                 <span class="stats-card-subtext">Transaksi selesai</span>
             </div>
             <div class="stats-card-icon-wrapper icon-wrapper-green">
@@ -190,7 +190,7 @@
         <div class="dashboard-stats-card">
             <div class="stats-card-info">
                 <span class="stats-card-label">Total Pendapatan</span>
-                <span class="stats-card-value" style="font-size: 1.25rem;">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</span>
+                <span class="stats-card-value" style="font-size: 1.25rem;">Rp {{ number_format($totalPendapatan, 0, ',', '.') }}</span>
                 <span class="stats-card-subtext">Bulan ini</span>
             </div>
             <div class="stats-card-icon-wrapper icon-wrapper-teal">
@@ -202,7 +202,7 @@
         <div class="dashboard-stats-card">
             <div class="stats-card-info">
                 <span class="stats-card-label">Pelanggan</span>
-                <span class="stats-card-value">{{ $totalCustomers }}</span>
+                <span class="stats-card-value">{{ $totalPelanggan }}</span>
                 <span class="stats-card-subtext">Total pelanggan</span>
             </div>
             <div class="stats-card-icon-wrapper icon-wrapper-purple">
@@ -215,7 +215,7 @@
     <div class="card dashboard-table-card">
         <div class="card-header d-flex align-items-center justify-content-between" style="background-color: #ffffff; border-bottom: 1.5px solid #e2e8f0; padding: 20px 24px;">
             <h5 class="card-title m-0" style="font-family:'Inter', sans-serif; font-weight: 700; color: #0f172a; font-size: 1rem;">Transaksi Terbaru</h5>
-            <a href="{{ route('admin.transactions.index') }}?tab=all_orders" class="btn-purple-sm">Lihat Semua</a>
+            <a href="{{ route('admin.transaksi.index') }}?tab=all_orders" class="btn-purple-sm">Lihat Semua</a>
         </div>
         <div class="table-responsive text-nowrap">
             <table class="table table-hover" style="margin-bottom: 0;">
@@ -230,17 +230,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($recentTransactions as $index => $transaction)
+                    @forelse($transaksiTerbaru as $index => $transaksi)
                     <tr style="border-bottom: 1px solid #f1f5f9;">
                         <td style="padding: 16px 24px; border: none; font-weight: 500;">{{ $index + 1 }}</td>
-                        <td style="padding: 16px 24px; border: none;">{{ $transaction->created_at->format('d/m/Y') }}</td>
+                        <td style="padding: 16px 24px; border: none;">{{ $transaksi->created_at->format('d/m/Y') }}</td>
                         <td style="padding: 16px 24px; border: none;">
-                            <a href="{{ route('admin.transactions.show', $transaction->id) }}" style="font-weight: 600; color: #632c9b; text-decoration: none;">
-                                {{ $transaction->invoice_number }}
+                            <a href="{{ route('admin.transaksi.tampilkan', $transaksi->id) }}" style="font-weight: 600; color: #632c9b; text-decoration: none;">
+                                {{ $transaksi->nomor_invoice }}
                             </a>
                         </td>
-                        <td style="padding: 16px 24px; border: none;">{{ $transaction->user->name ?? 'Guest' }}</td>
-                        <td style="padding: 16px 24px; border: none; font-weight: 600; color: #632c9b;">Rp {{ number_format($transaction->total, 0, ',', '.') }}</td>
+                        <td style="padding: 16px 24px; border: none;">{{ $transaksi->pengguna->nama ?? 'Guest' }}</td>
+                        <td style="padding: 16px 24px; border: none; font-weight: 600; color: #632c9b;">Rp {{ number_format($transaksi->total, 0, ',', '.') }}</td>
                         <td style="padding: 16px 24px; border: none;">
                             @php
                                 $statusMap = [
@@ -249,7 +249,7 @@
                                     'completed' => ['label' => 'Selesai', 'class' => 'status-badge-completed'],
                                     'cancelled' => ['label' => 'Dibatalkan', 'class' => 'status-badge-cancelled']
                                 ];
-                                $statusDetail = $statusMap[$transaction->status] ?? ['label' => ucfirst($transaction->status), 'class' => 'bg-secondary text-white'];
+                                $statusDetail = $statusMap[$transaksi->status] ?? ['label' => ucfirst($transaksi->status), 'class' => 'bg-secondary text-white'];
                             @endphp
                             <span class="status-badge-custom {{ $statusDetail['class'] }}">
                                 {{ $statusDetail['label'] }}

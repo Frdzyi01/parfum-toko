@@ -606,7 +606,7 @@
                         <span class="hero-label">Premium Fragrances</span>
                         <h1 class="hero-title">Elegansi dalam Setiap Semprotan</h1>
                         <p class="hero-desc">Temukan keajaiban wewangian original pilihan kelas dunia yang melengkapi keunikan karakter Anda. Keaslian terjamin 100% langsung dari distributor.</p>
-                        <a href="{{ route('shop') }}" class="btn-hero-action">Jelajahi Katalog</a>
+                        <a href="{{ route('toko') }}" class="btn-hero-action">Jelajahi Katalog</a>
                     </div>
                 </div>
             </div>
@@ -616,7 +616,7 @@
                         <span class="hero-label">Exquisite Collection</span>
                         <h1 class="hero-title">Aroma Mewah & Tahan Lama</h1>
                         <p class="hero-desc">Miliki aroma eksklusif terlaris dunia dari brand papan atas internasional seperti Chanel, Dior, dan Tom Ford dengan penawaran terbaik bulan ini.</p>
-                        <a href="{{ route('shop') }}" class="btn-hero-action">Miliki Sekarang</a>
+                        <a href="{{ route('toko') }}" class="btn-hero-action">Miliki Sekarang</a>
                     </div>
                 </div>
             </div>
@@ -626,7 +626,7 @@
                         <span class="hero-label">Perfect Gift</span>
                         <h1 class="hero-title">Hadiah Terbaik Bagi Orang Terkasih</h1>
                         <p class="hero-desc">Dapatkan koleksi wewangian unisex dan mini size eksklusif yang sangat cocok dijadikan bingkisan mewah untuk menemani momen spesial mereka.</p>
-                        <a href="{{ route('shop') }}?category[]=Mini+Size" class="btn-hero-action">Cari Mini Size</a>
+                        <a href="{{ route('toko') }}?kategori[]=Mini+Size" class="btn-hero-action">Cari Mini Size</a>
                     </div>
                 </div>
             </div>
@@ -639,7 +639,7 @@
         <div class="container" style="max-width: 1280px; margin: 0 auto; padding: 0 25px;">
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-sm-6" style="margin-bottom: 15px;">
-                    <a href="{{ route('shop') }}?category[]=Parfum+Pria" class="quick-cat-card">
+                    <a href="{{ route('toko') }}?kategori[]=Parfum+Pria" class="quick-cat-card">
                         <div class="quick-cat-icon">
                             <i class="fa-solid fa-mars"></i>
                         </div>
@@ -650,7 +650,7 @@
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6" style="margin-bottom: 15px;">
-                    <a href="{{ route('shop') }}?category[]=Parfum+Wanita" class="quick-cat-card">
+                    <a href="{{ route('toko') }}?kategori[]=Parfum+Wanita" class="quick-cat-card">
                         <div class="quick-cat-icon">
                             <i class="fa-solid fa-venus"></i>
                         </div>
@@ -661,7 +661,7 @@
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6" style="margin-bottom: 15px;">
-                    <a href="{{ route('shop') }}?category[]=Unisex" class="quick-cat-card">
+                    <a href="{{ route('toko') }}?kategori[]=Unisex" class="quick-cat-card">
                         <div class="quick-cat-icon">
                             <i class="fa-solid fa-venus-mars"></i>
                         </div>
@@ -672,7 +672,7 @@
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6" style="margin-bottom: 15px;">
-                    <a href="{{ route('shop') }}?category[]=Mini+Size" class="quick-cat-card">
+                    <a href="{{ route('toko') }}?kategori[]=Mini+Size" class="quick-cat-card">
                         <div class="quick-cat-icon">
                             <i class="fa-solid fa-compress"></i>
                         </div>
@@ -694,17 +694,17 @@
             <h2 class="section-title-premium">Signature Fragrance</h2>
             
             <div class="row">
-                @if(isset($heroProducts[0]))
+                @if(isset($produkHero[0]))
                 <div class="col-lg-6 mb-4 mb-lg-0">
                     <div class="premium-cat-large">
-                        <div class="premium-cat-img set-bg" data-setbg="{{ $heroProducts[0]->thumbnail_url }}"></div>
+                        <div class="premium-cat-img set-bg" data-setbg="{{ $produkHero[0]->gambar_mini_url }}"></div>
                         <div class="premium-cat-overlay"></div>
                         <div class="premium-cat-content">
                             <span class="premium-cat-badge">Signature</span>
-                            <h3 class="premium-cat-title">{{ $heroProducts[0]->name }}</h3>
-                            <p class="premium-cat-desc">{{ Str::limit($heroProducts[0]->description, 120) }}</p>
-                            <span class="premium-cat-price">{{ $heroProducts[0]->formatted_price }}</span>
-                            <a href="{{ route('product.show', $heroProducts[0]->slug) }}" class="premium-cat-btn">
+                            <h3 class="premium-cat-title">{{ $produkHero[0]->nama }}</h3>
+                            <p class="premium-cat-desc">{{ Str::limit($produkHero[0]->deskripsi, 120) }}</p>
+                            <span class="premium-cat-price">{{ $produkHero[0]->harga_format }}</span>
+                            <a href="{{ route('produk.tampilkan', $produkHero[0]->slug) }}" class="premium-cat-btn">
                                 Jelajahi Aroma &nbsp;<i class="fa-solid fa-arrow-right"></i>
                             </a>
                         </div>
@@ -715,16 +715,16 @@
                 <div class="col-lg-6">
                     <div class="row">
                         @for($i = 1; $i < 5; $i++)
-                            @if(isset($heroProducts[$i]))
+                            @if(isset($produkHero[$i]))
                             <div class="col-sm-6 mb-4">
                                 <div class="premium-cat-small">
-                                    <div class="premium-cat-img set-bg" data-setbg="{{ $heroProducts[$i]->thumbnail_url }}"></div>
+                                    <div class="premium-cat-img set-bg" data-setbg="{{ $produkHero[$i]->gambar_mini_url }}"></div>
                                     <div class="premium-cat-overlay"></div>
                                     <div class="premium-cat-content">
                                         <span class="premium-cat-badge">Eksklusif</span>
-                                        <h4 class="premium-cat-title">{{ $heroProducts[$i]->name }}</h4>
-                                        <span class="premium-cat-price">{{ $heroProducts[$i]->formatted_price }}</span>
-                                        <a href="{{ route('product.show', $heroProducts[$i]->slug) }}" class="premium-cat-link">
+                                        <h4 class="premium-cat-title">{{ $produkHero[$i]->nama }}</h4>
+                                        <span class="premium-cat-price">{{ $produkHero[$i]->harga_format }}</span>
+                                        <a href="{{ route('produk.tampilkan', $produkHero[$i]->slug) }}" class="premium-cat-link">
                                             Shop Now &nbsp;<i class="fa-solid fa-chevron-right" style="font-size: 0.75rem;"></i>
                                         </a>
                                     </div>
@@ -759,18 +759,18 @@
           </div>
         </div>
         <div class="row property__gallery">
-          @forelse($newProducts as $product)
+          @forelse($produkBaru as $produk)
           @php
               $catClass = 'other';
-              if ($product->category) {
-                  $catClass = Str::slug($product->category);
+              if ($produk->kategori) {
+                  $catClass = Str::slug($produk->kategori);
               }
           @endphp
           <div class="col-lg-3 col-md-4 col-sm-6 mix {{ $catClass }}">
             <div class="product__item">
               <div
                 class="product__item__pic set-bg"
-                data-setbg="{{ $product->thumbnail_url }}"
+                data-setbg="{{ $produk->gambar_mini_url }}"
               >
                 @if($loop->first)
                 <div class="label new" style="background:#632c9b;">New</div>
@@ -778,7 +778,7 @@
               
               </div>
               <div class="product__item__text">
-                <h6><a href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a></h6>
+                <h6><a href="{{ route('produk.tampilkan', $produk->slug) }}">{{ $produk->nama }}</a></h6>
                 <div class="rating">
                   <i class="fa fa-star text-warning"></i>
                   <i class="fa fa-star text-warning"></i>
@@ -786,21 +786,21 @@
                   <i class="fa fa-star text-warning"></i>
                   <i class="fa fa-star text-warning"></i>
                 </div>
-                <div class="product__price">{{ $product->formatted_price }}</div>
+                <div class="product__price">{{ $produk->harga_format }}</div>
                 
                 <!-- Double Buttons: Lihat Detail & Beli Sekarang -->
                 <div class="product-btn-group">
                     <!-- View Details Button -->
-                    <a href="{{ route('product.show', $product->slug) }}" class="product-btn-outline">
+                    <a href="{{ route('produk.tampilkan', $produk->slug) }}" class="product-btn-outline">
                         Lihat Detail
                     </a>
 
                     <!-- Buy Now Button -->
-                    @if($product->stock > 0)
-                    <form action="{{ route('cart.add', $product->id) }}" method="POST" style="margin:0; flex:1;">
+                    @if($produk->stok > 0)
+                    <form action="{{ route('keranjang.tambah', $produk->id) }}" method="POST" style="margin:0; flex:1;">
                         @csrf
-                        <input type="hidden" name="qty" value="1">
-                        <input type="hidden" name="buy_now" value="1">
+                        <input type="hidden" name="jumlah" value="1">
+                        <input type="hidden" name="beli_sekarang" value="1">
                         <button type="submit" class="product-btn-solid" style="width:100%;">
                             Beli Sekarang
                         </button>
@@ -832,21 +832,21 @@
                 <div class="banner__text">
                   <span>Koleksi Eksklusif Rando Parfum</span>
                   <h1>Temukan Karakter Aromamu</h1>
-                  <a href="{{ route('shop') }}">Belanja Sekarang</a>
+                  <a href="{{ route('toko') }}">Belanja Sekarang</a>
                 </div>
               </div>
               <div class="banner__item">
                 <div class="banner__text">
                   <span>Wewangian Mewah Tahan Lama</span>
                   <h1>Aroma Terbaik Setiap Momen</h1>
-                  <a href="{{ route('shop') }}">Belanja Sekarang</a>
+                  <a href="{{ route('toko') }}">Belanja Sekarang</a>
                 </div>
               </div>
               <div class="banner__item">
                 <div class="banner__text">
                   <span>Bahan Alami Berkualitas Tinggi</span>
                   <h1>Prestige & Elegance</h1>
-                  <a href="{{ route('shop') }}">Belanja Sekarang</a>
+                  <a href="{{ route('toko') }}">Belanja Sekarang</a>
                 </div>
               </div>
             </div>
@@ -866,13 +866,13 @@
               <div class="section-title">
                 <h4 style="font-family:'Cinzel', serif; font-weight:700;">Hot Trend</h4>
               </div>
-              @foreach($hotTrend as $product)
+              @foreach($trenPopuler as $produk)
               <div class="trend__item">
                 <div class="trend__item__pic">
-                  <img src="{{ $product->thumbnail_url }}" alt="" style="width: 90px; height: 90px; object-fit: cover; border-radius: 8px;"/>
+                  <img src="{{ $produk->gambar_mini_url }}" alt="" style="width: 90px; height: 90px; object-fit: cover; border-radius: 8px;"/>
                 </div>
                 <div class="trend__item__text">
-                  <h6><a href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a></h6>
+                  <h6><a href="{{ route('produk.tampilkan', $produk->slug) }}">{{ $produk->nama }}</a></h6>
                   <div class="rating">
                     <i class="fa fa-star text-warning"></i>
                     <i class="fa fa-star text-warning"></i>
@@ -880,7 +880,7 @@
                     <i class="fa fa-star text-warning"></i>
                     <i class="fa fa-star text-warning"></i>
                   </div>
-                  <div class="product__price">{{ $product->formatted_price }}</div>
+                  <div class="product__price">{{ $produk->harga_format }}</div>
                 </div>
               </div>
               @endforeach
@@ -892,13 +892,13 @@
               <div class="section-title">
                 <h4 style="font-family:'Cinzel', serif; font-weight:700;">Best Seller</h4>
               </div>
-              @foreach($bestSeller as $product)
+              @foreach($terlaris as $produk)
               <div class="trend__item">
                 <div class="trend__item__pic">
-                  <img src="{{ $product->thumbnail_url }}" alt="" style="width: 90px; height: 90px; object-fit: cover; border-radius: 8px;"/>
+                  <img src="{{ $produk->gambar_mini_url }}" alt="" style="width: 90px; height: 90px; object-fit: cover; border-radius: 8px;"/>
                 </div>
                 <div class="trend__item__text">
-                  <h6><a href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a></h6>
+                  <h6><a href="{{ route('produk.tampilkan', $produk->slug) }}">{{ $produk->nama }}</a></h6>
                   <div class="rating">
                     <i class="fa fa-star text-warning"></i>
                     <i class="fa fa-star text-warning"></i>
@@ -906,7 +906,7 @@
                     <i class="fa fa-star text-warning"></i>
                     <i class="fa fa-star text-warning"></i>
                   </div>
-                  <div class="product__price">{{ $product->formatted_price }}</div>
+                  <div class="product__price">{{ $produk->harga_format }}</div>
                 </div>
               </div>
               @endforeach
@@ -918,13 +918,13 @@
               <div class="section-title">
                 <h4 style="font-family:'Cinzel', serif; font-weight:700;">Rekomendasi</h4>
               </div>
-              @foreach($feature as $product)
+              @foreach($unggulan as $produk)
               <div class="trend__item">
                 <div class="trend__item__pic">
-                  <img src="{{ $product->thumbnail_url }}" alt="" style="width: 90px; height: 90px; object-fit: cover; border-radius: 8px;"/>
+                  <img src="{{ $produk->gambar_mini_url }}" alt="" style="width: 90px; height: 90px; object-fit: cover; border-radius: 8px;"/>
                 </div>
                 <div class="trend__item__text">
-                  <h6><a href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a></h6>
+                  <h6><a href="{{ route('produk.tampilkan', $produk->slug) }}">{{ $produk->nama }}</a></h6>
                   <div class="rating">
                     <i class="fa fa-star text-warning"></i>
                     <i class="fa fa-star text-warning"></i>
@@ -932,7 +932,7 @@
                     <i class="fa fa-star text-warning"></i>
                     <i class="fa fa-star text-warning"></i>
                   </div>
-                  <div class="product__price">{{ $product->formatted_price }}</div>
+                  <div class="product__price">{{ $produk->harga_format }}</div>
                 </div>
               </div>
               @endforeach
@@ -977,7 +977,7 @@
                   <p>Secs</p>
                 </div>
               </div>
-              <a href="{{ route('shop') }}">Belanja Sekarang</a>
+              <a href="{{ route('toko') }}">Belanja Sekarang</a>
             </div>
           </div>
         </div>
