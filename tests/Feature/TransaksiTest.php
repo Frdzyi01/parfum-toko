@@ -43,9 +43,9 @@ class TransaksiTest extends TestCase
         $response->assertRedirect(route('keranjang.index'));
 
         // Cek keranjang di database
-        $keranjang = $user->ambilAtauBuatKeranjang();
-        $this->assertCount(1, $keranjang->item);
-        $this->assertEquals(2, $keranjang->item->first()->jumlah);
+        $keranjang = $user->fresh()->ambilAtauBuatKeranjang();
+        $this->assertCount(1, $keranjang->item()->get());
+        $this->assertEquals(2, $keranjang->item()->first()->jumlah);
 
         // 4. Buka halaman checkout
         $response = $this->actingAs($user)
