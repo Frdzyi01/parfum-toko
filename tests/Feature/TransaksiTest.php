@@ -48,12 +48,12 @@ class TransaksiTest extends TestCase
         $this->assertEquals(2, $keranjang->item()->first()->jumlah);
 
         // 4. Buka halaman checkout
-        $response = $this->actingAs($user)
+        $response = $this->actingAs($user->fresh())
             ->get(route('pemesanan.index'));
         $response->assertStatus(200);
 
         // 5. Proses checkout
-        $response = $this->actingAs($user)
+        $response = $this->actingAs($user->fresh())
             ->post(route('pemesanan.proses'), [
                 'catatan' => 'Catatan test'
             ]);
@@ -78,14 +78,14 @@ class TransaksiTest extends TestCase
         $response->assertRedirect(route('transaksi.tampilkan', $transaksi->nomor_invoice));
 
         // 6. Buka halaman detail transaksi
-        $response = $this->actingAs($user)
+        $response = $this->actingAs($user->fresh())
             ->get(route('transaksi.tampilkan', $transaksi->nomor_invoice));
         $response->assertStatus(200);
         $response->assertSee('Detail Pesanan');
         $response->assertSee($transaksi->nomor_invoice);
 
         // 7. Buka halaman riwayat transaksi
-        $response = $this->actingAs($user)
+        $response = $this->actingAs($user->fresh())
             ->get(route('transaksi.index'));
         $response->assertStatus(200);
         $response->assertSee($transaksi->nomor_invoice);
