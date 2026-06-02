@@ -215,7 +215,7 @@
     <div class="card dashboard-table-card">
         <div class="card-header d-flex align-items-center justify-content-between" style="background-color: #ffffff; border-bottom: 1.5px solid #e2e8f0; padding: 20px 24px;">
             <h5 class="card-title m-0" style="font-family:'Inter', sans-serif; font-weight: 700; color: #0f172a; font-size: 1rem;">Transaksi Terbaru</h5>
-            <a href="{{ route('admin.transaksi.index') }}?tab=all_orders" class="btn-purple-sm">Lihat Semua</a>
+            <a href="{{ route('admin.transaksi.index') }}?tab=semua_pesanan" class="btn-purple-sm">Lihat Semua</a>
         </div>
         <div class="table-responsive text-nowrap">
             <table class="table table-hover" style="margin-bottom: 0;">

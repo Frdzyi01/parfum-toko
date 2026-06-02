@@ -162,23 +162,23 @@
                     </li>
 
                     <!-- Transaksi -->
-                    <li class="menu-item {{ request()->routeIs('admin.transaksi.*') && request('tab') == 'all_orders' ? 'active' : '' }}">
-                        <a href="{{ route('admin.transaksi.index') }}?tab=all_orders" class="menu-link">
+                    <li class="menu-item {{ request()->routeIs('admin.transaksi.*') && request('tab') == 'semua_pesanan' ? 'active' : '' }}">
+                        <a href="{{ route('admin.transaksi.index') }}?tab=semua_pesanan" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-receipt"></i>
                             <div>Transaksi</div>
                         </a>
                     </li>
 
                     <!-- Pelanggan -->
-                    <li class="menu-item">
-                        <a href="javascript:void(0)" onclick="alert('Fitur Manajemen Pelanggan akan segera hadir!')" class="menu-link">
+                    <li class="menu-item {{ request()->routeIs('admin.pelanggan.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.pelanggan.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-user"></i>
                             <div>Pelanggan</div>
                         </a>
                     </li>
 
-                    <!-- Laporan (Active when on transactions index without tab=all_orders) -->
-                    <li class="menu-item {{ request()->routeIs('admin.transaksi.index') && request('tab') != 'all_orders' ? 'active' : '' }}">
+                    <!-- Laporan (Active when on transactions index without tab=semua_pesanan) -->
+                    <li class="menu-item {{ request()->routeIs('admin.transaksi.index') && request('tab') != 'semua_pesanan' ? 'active' : '' }}">
                         <a href="{{ route('admin.transaksi.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-bar-chart-alt-2"></i>
                             <div>Laporan</div>

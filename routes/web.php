@@ -18,6 +18,7 @@ use App\Http\Controllers\Auth\AdminMasukController;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\AdminProdukController;
 use App\Http\Controllers\Backend\AdminTransaksiController;
+use App\Http\Controllers\Backend\AdminPelangganController;
 
 // ─────────────────────────────────────────────
 // JALUR UMUM (PUBLIC ROUTES)
@@ -104,5 +105,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/transaksi', [AdminTransaksiController::class, 'index'])->name('admin.transaksi.index');
         Route::get('/transaksi/{transaksi}', [AdminTransaksiController::class, 'tampilkan'])->name('admin.transaksi.tampilkan');
         Route::put('/transaksi/{transaksi}', [AdminTransaksiController::class, 'perbarui'])->name('admin.transaksi.perbarui');
+
+        // Manajemen Pelanggan
+        Route::get('/pelanggan', [AdminPelangganController::class, 'index'])->name('admin.pelanggan.index');
+        Route::get('/pelanggan/{pelanggan}', [AdminPelangganController::class, 'tampilkan'])->name('admin.pelanggan.tampilkan');
     });
 });

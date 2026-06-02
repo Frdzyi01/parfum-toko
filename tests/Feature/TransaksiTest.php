@@ -141,5 +141,19 @@ class TransaksiTest extends TestCase
 
         $transaksi->refresh();
         $this->assertEquals('processing', $transaksi->status);
+
+        // 7. Admin melihat daftar pelanggan
+        $response = $this->actingAs($admin)
+            ->get(route('admin.pelanggan.index'));
+        $response->assertStatus(200);
+        $response->assertSee($user->nama);
+        $response->assertSee($user->email);
+
+        // 8. Admin melihat detail pelanggan beserta riwayat transaksinya
+        $response = $this->actingAs($admin)
+            ->get(route('admin.pelanggan.tampilkan', $user->id));
+        $response->assertStatus(200);
+        $response->assertSee($user->nama);
+        $response->assertSee($transaksi->nomor_invoice);
     }
 }
