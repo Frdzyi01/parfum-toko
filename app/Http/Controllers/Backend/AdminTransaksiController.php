@@ -74,6 +74,6 @@ class AdminTransaksiController extends Controller
 
         $transaksi->update($tervalidasi);
 
-        return redirect()->route('admin.transaksi.show', $transaksi)->with('success', 'Status transaksi berhasil diperbarui.');
+        return redirect()->route('admin.transaksi.tampilkan', $transaksi)->with('success', 'Status transaksi berhasil diperbarui.');
     }
 }

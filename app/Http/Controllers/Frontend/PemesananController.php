@@ -95,6 +95,9 @@ class PemesananController extends Controller
                 ->with('success', 'Pesanan Anda berhasil dibuat! Invoice: ' . $transaksi->nomor_invoice);
         } catch (\Throwable $e) {
             DB::rollBack();
+            \Illuminate\Support\Facades\Log::error('Kesalahan checkout: ' . $e->getMessage(), [
+                'exception' => $e
+            ]);
             return back()->with('error', 'Terjadi kesalahan saat memproses pesanan. Silakan coba lagi.');
         }
     }
