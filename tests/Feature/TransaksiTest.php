@@ -63,7 +63,7 @@ class TransaksiTest extends TestCase
         $this->assertNotNull($transaksi);
         $this->assertEquals($user->id, $transaksi->pengguna_id);
         $this->assertEquals(200000, $transaksi->total);
-        $this->assertEquals('pending', $transaksi->status);
+        $this->assertEquals('menunggu_pembayaran', $transaksi->status);
         $this->assertEquals('Catatan test', $transaksi->catatan);
 
         // Cek stok produk berkurang
@@ -74,17 +74,39 @@ class TransaksiTest extends TestCase
         $keranjang->refresh();
         $this->assertCount(0, $keranjang->item);
 
-        // Harus dialihkan ke halaman detail transaksi dengan parameter invoice
+        // Harus dialihkan ke halaman pembayaran transaksi dengan parameter invoice
+        $response->assertRedirect(route('transaksi.pembayaran', $transaksi->nomor_invoice));
+
+        // 6. Buka halaman pembayaran transaksi
+        $response = $this->actingAs($user->fresh())
+            ->get(route('transaksi.pembayaran', $transaksi->nomor_invoice));
+        $response->assertStatus(200);
+        $response->assertSee('Pembayaran QRIS');
+        $response->assertSee($transaksi->nomor_invoice);
+
+        // 7. Upload bukti pembayaran
+        \Illuminate\Support\Facades\Storage::fake('public');
+        $file = \Illuminate\Http\UploadedFile::fake()->image('bukti.png');
+
+        $response = $this->actingAs($user->fresh())
+            ->post(route('transaksi.upload-bukti', $transaksi->nomor_invoice), [
+                'bukti_pembayaran' => $file
+            ]);
+
+        $transaksi->refresh();
+        $this->assertEquals('dibayar', $transaksi->status);
+        $this->assertNotNull($transaksi->bukti_pembayaran);
         $response->assertRedirect(route('transaksi.tampilkan', $transaksi->nomor_invoice));
 
-        // 6. Buka halaman detail transaksi
+        // 8. Buka halaman detail transaksi
         $response = $this->actingAs($user->fresh())
             ->get(route('transaksi.tampilkan', $transaksi->nomor_invoice));
         $response->assertStatus(200);
         $response->assertSee('Detail Pesanan');
         $response->assertSee($transaksi->nomor_invoice);
+        $response->assertSee('Informasi Pembayaran');
 
-        // 7. Buka halaman riwayat transaksi
+        // 9. Buka halaman riwayat transaksi
         $response = $this->actingAs($user->fresh())
             ->get(route('transaksi.index'));
         $response->assertStatus(200);
@@ -114,7 +136,7 @@ class TransaksiTest extends TestCase
             'pengguna_id' => $user->id,
             'nomor_invoice' => 'INV-ABCD-12345678',
             'total' => 150000,
-            'status' => 'pending',
+            'status' => 'dibayar',
             'catatan' => 'Test admin'
         ]);
 

@@ -62,6 +62,32 @@
                         </table>
                     </div>
                 </div>
+
+                <!-- Informasi Pembayaran -->
+                @if($transaksi->bukti_pembayaran || $transaksi->apakahSudahBayar())
+                <div style="background:#fff; border:1px solid #eee; border-radius:6px; padding:30px; margin-bottom:30px;">
+                    <h5 style="border-bottom:1px solid #f3f3f3; padding-bottom:15px; margin-bottom:20px;">
+                        <i class="fa-solid fa-credit-card" style="color:#632c9b;"></i> Informasi Pembayaran
+                    </h5>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <p style="margin-bottom:8px;"><strong>Metode:</strong> {{ $transaksi->metode_pembayaran ?? '-' }}</p>
+                            @if($transaksi->dibayar_pada)
+                            <p style="margin-bottom:8px;"><strong>Waktu Bayar:</strong> {{ $transaksi->dibayar_pada->format('d M Y, H:i') }}</p>
+                            @endif
+                        </div>
+                        <div class="col-sm-6">
+                            @if($transaksi->bukti_pembayaran)
+                            <p style="margin-bottom:8px;"><strong>Bukti Pembayaran:</strong></p>
+                            <a href="{{ $transaksi->bukti_pembayaran_url }}" target="_blank">
+                                <img src="{{ $transaksi->bukti_pembayaran_url }}" alt="Bukti Pembayaran"
+                                     style="max-width:200px; border-radius:8px; border:1px solid #e2e8f0; cursor:pointer;">
+                            </a>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                @endif
             </div>
 
             <div class="col-lg-4">
@@ -81,17 +107,14 @@
                                 Status
                                 <span>
                                     <span style="padding:3px 8px; border-radius:4px; font-size:12px; color:#fff;
-                                                 background:{{ match($transaksi->status) {
-                                                    'pending' => '#ffc107',
-                                                    'processing' => '#17a2b8',
-                                                    'completed' => '#28a745',
-                                                    'cancelled' => '#dc3545',
-                                                    default => '#6c757d'
-                                                 } }};">
+                                                 background:{{ $transaksi->warna_status }};">
                                         {{ $transaksi->label_status }}
                                     </span>
                                 </span>
                             </li>
+                            @if($transaksi->metode_pembayaran)
+                            <li>Metode <span>{{ $transaksi->metode_pembayaran }}</span></li>
+                            @endif
                             <li>Tanggal <span>{{ $transaksi->created_at->format('d M Y, H:i') }}</span></li>
                             <li>Total <span>{{ $transaksi->total_format }}</span></li>
                         </ul>
@@ -104,7 +127,15 @@
                     </div>
                     @endif
 
-                    <a href="{{ route('transaksi.index') }}" class="site-btn" style="display:block; text-align:center; margin-top:20px;">
+                    <!-- Tombol Bayar jika masih menunggu pembayaran -->
+                    @if($transaksi->apakahBisaBayar())
+                    <a href="{{ route('transaksi.pembayaran', $transaksi->nomor_invoice) }}"
+                       class="site-btn" style="display:block; text-align:center; margin-top:20px; background:#632c9b; border-color:#632c9b;">
+                        <i class="fa-solid fa-qrcode"></i> Bayar Sekarang
+                    </a>
+                    @endif
+
+                    <a href="{{ route('transaksi.index') }}" class="site-btn" style="display:block; text-align:center; margin-top:10px;">
                         Kembali ke Pesanan
                     </a>
                     <a href="{{ route('toko') }}" class="primary-btn" style="display:block; text-align:center; margin-top:10px;">

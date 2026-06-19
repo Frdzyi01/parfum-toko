@@ -69,7 +69,7 @@ class AdminTransaksiController extends Controller
     public function perbarui(Request $request, Transaksi $transaksi)
     {
         $tervalidasi = $request->validate([
-            'status' => 'required|in:pending,processing,completed,cancelled'
+            'status' => 'required|in:pending,menunggu_pembayaran,dibayar,processing,completed,cancelled'
         ]);
 
         $transaksi->update($tervalidasi);

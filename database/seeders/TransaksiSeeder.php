@@ -28,9 +28,13 @@ class TransaksiSeeder extends Seeder
             $user = $pengguna->random();
             $date = Carbon::now()->subDays(rand(0, 20))->subHours(rand(0, 23))->subMinutes(rand(0, 59));
             
-            // Random status (completed is more likely for revenue stats)
-            $statuses = ['pending', 'processing', 'completed', 'completed', 'completed'];
-            $status = $statuses[array_rand($statuses)];
+            // Random status (completed, dibayar, or menunggu_pembayaran)
+            $statuses = ['menunggu_pembayaran', 'dibayar', 'completed'];
+            $status = $statuses[$i % count($statuses)];
+
+            $metode_pembayaran = in_array($status, ['dibayar', 'completed']) ? 'QRIS' : null;
+            $bukti_pembayaran = in_array($status, ['dibayar', 'completed']) ? 'bukti-pembayaran/demo.png' : null;
+            $dibayar_pada = in_array($status, ['dibayar', 'completed']) ? $date->copy()->addMinutes(rand(5, 30)) : null;
 
             // Create transaction
             $transaksi = Transaksi::create([
@@ -39,6 +43,9 @@ class TransaksiSeeder extends Seeder
                 'total' => 0,
                 'status' => $status,
                 'catatan' => 'Catatan pesanan demo.',
+                'metode_pembayaran' => $metode_pembayaran,
+                'bukti_pembayaran' => $bukti_pembayaran,
+                'dibayar_pada' => $dibayar_pada,
                 'created_at' => $date,
                 'updated_at' => $date,
             ]);

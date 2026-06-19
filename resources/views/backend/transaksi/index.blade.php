@@ -322,22 +322,8 @@
                             <td style="padding: 16px 24px; border: none;">{{ $t->pengguna->nama ?? 'Guest' }}</td>
                             <td style="padding: 16px 24px; font-weight: 600; color: #632c9b; border: none;">Rp {{ number_format($t->total, 0, ',', '.') }}</td>
                             <td style="padding: 16px 24px; border: none;">
-                                @php
-                                    $statusClass = [
-                                        'pending' => 'bg-label-warning',
-                                        'processing' => 'bg-label-info',
-                                        'completed' => 'bg-label-success',
-                                        'cancelled' => 'bg-label-danger'
-                                    ];
-                                    $statusLabel = [
-                                        'pending' => 'Tertunda',
-                                        'processing' => 'Diproses',
-                                        'completed' => 'Selesai',
-                                        'cancelled' => 'Dibatalkan'
-                                    ];
-                                @endphp
-                                <span class="badge {{ $statusClass[$t->status] ?? 'bg-label-secondary' }}">
-                                    {{ $statusLabel[$t->status] ?? ucfirst($t->status) }}
+                                <span class="badge" style="background:{{ $t->warna_status }}; color:#fff;">
+                                    {{ $t->label_status }}
                                 </span>
                             </td>
                             <td style="padding: 16px 24px; border: none;">{{ $t->created_at->format('d M Y H:i') }}</td>

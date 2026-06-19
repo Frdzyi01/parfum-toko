@@ -65,10 +65,11 @@ class PemesananController extends Controller
 
             // Buat transaksi
             $transaksi = Transaksi::create([
-                'pengguna_id' => $pengguna->id,
-                'total'       => $total,
-                'status'      => 'pending',
-                'catatan'     => $request->catatan,
+                'pengguna_id'       => $pengguna->id,
+                'total'             => $total,
+                'status'            => 'menunggu_pembayaran',
+                'catatan'           => $request->catatan,
+                'metode_pembayaran' => 'QRIS',
             ]);
 
             // Copy item keranjang ke detail transaksi & kurangi stok
@@ -91,8 +92,8 @@ class PemesananController extends Controller
             DB::commit();
 
             return redirect()
-                ->route('transaksi.tampilkan', $transaksi->nomor_invoice)
-                ->with('success', 'Pesanan Anda berhasil dibuat! Invoice: ' . $transaksi->nomor_invoice);
+                ->route('transaksi.pembayaran', $transaksi->nomor_invoice)
+                ->with('success', 'Pesanan berhasil dibuat! Silakan lakukan pembayaran.');
         } catch (\Throwable $e) {
             DB::rollBack();
             \Illuminate\Support\Facades\Log::error('Kesalahan checkout: ' . $e->getMessage(), [

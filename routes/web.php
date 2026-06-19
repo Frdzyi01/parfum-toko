@@ -33,6 +33,15 @@ Route::get('/toko', [ProdukController::class, 'index'])->name('toko');
 // Detail Produk
 Route::get('/produk/{slug}', [ProdukController::class, 'tampilkan'])->name('produk.tampilkan');
 
+// Halaman Statis
+Route::get('/cara-belanja', function () {
+    return view('frontend.cara-belanja');
+})->name('cara-belanja');
+
+Route::get('/tentang-kami', function () {
+    return view('frontend.tentang-kami');
+})->name('tentang-kami');
+
 // ─────────────────────────────────────────────
 // JALUR AUTENTIKASI (AUTH ROUTES)
 // ─────────────────────────────────────────────
@@ -80,6 +89,10 @@ Route::middleware('auth')->group(function () {
     // Transaksi
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
     Route::get('/transaksi/{invoice}', [TransaksiController::class, 'tampilkan'])->name('transaksi.tampilkan');
+
+    // Pembayaran QRIS
+    Route::get('/transaksi/{invoice}/pembayaran', [TransaksiController::class, 'pembayaran'])->name('transaksi.pembayaran');
+    Route::post('/transaksi/{invoice}/upload-bukti', [TransaksiController::class, 'uploadBukti'])->name('transaksi.upload-bukti');
 });
 
 // ─────────────────────────────────────────────

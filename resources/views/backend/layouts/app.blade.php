@@ -185,14 +185,6 @@
                         </a>
                     </li>
 
-                    <!-- Pengaturan -->
-                    <li class="menu-item">
-                        <a href="javascript:void(0)" onclick="alert('Fitur Pengaturan akan segera hadir!')" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-cog"></i>
-                            <div>Pengaturan</div>
-                        </a>
-                    </li>
-
                     <!-- Logout -->
                     <li class="menu-item">
                         <a href="{{ route('admin.keluar') }}" class="menu-link" onclick="event.preventDefault(); document.getElementById('logout-form-sidebar').submit();">

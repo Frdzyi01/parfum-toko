@@ -51,23 +51,24 @@
                                 <td>{{ $t->created_at->format('d M Y, H:i') }}</td>
                                 <td>{{ $t->total_format }}</td>
                                 <td>
-                                    <span class="badge badge-{{ $t->badge_status }}"
-                                          style="padding:5px 10px; border-radius:4px; font-size:12px;
-                                                 color:#fff; background:{{ match($t->status) {
-                                                    'pending' => '#ffc107',
-                                                    'processing' => '#17a2b8',
-                                                    'completed' => '#28a745',
-                                                    'cancelled' => '#dc3545',
-                                                    default => '#6c757d'
-                                                 } }};">
+                                    <span style="padding:5px 10px; border-radius:4px; font-size:12px;
+                                                 color:#fff; background:{{ $t->warna_status }};">
                                         {{ $t->label_status }}
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="{{ route('transaksi.tampilkan', $t->nomor_invoice) }}"
-                                       class="primary-btn" style="padding:8px 15px; font-size:13px;">
-                                        Detail
-                                    </a>
+                                    <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                                        <a href="{{ route('transaksi.tampilkan', $t->nomor_invoice) }}"
+                                           class="primary-btn" style="padding:8px 15px; font-size:13px;">
+                                            Detail
+                                        </a>
+                                        @if($t->apakahBisaBayar())
+                                        <a href="{{ route('transaksi.pembayaran', $t->nomor_invoice) }}"
+                                           style="padding:8px 15px; font-size:13px; background:#632c9b; color:#fff; border-radius:4px; text-decoration:none; font-weight:600; display:inline-block;">
+                                            <i class="fa-solid fa-qrcode"></i> Bayar
+                                        </a>
+                                        @endif
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach

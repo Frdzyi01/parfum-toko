@@ -259,6 +259,16 @@
         z-index: 100;
         animation: slideDown 0.2s ease-out;
     }
+
+    .header-custom .dropdown-menu::before {
+        content: '';
+        position: absolute;
+        top: -12px;
+        left: 0;
+        right: 0;
+        height: 12px;
+        background: transparent;
+    }
     
     @keyframes slideDown {
         from {
@@ -317,11 +327,11 @@
                         <li class="{{ request()->routeIs('toko') ? 'active' : '' }}">
                             <a href="{{ route('toko') }}">Katalog</a>
                         </li>
-                        <li>
-                            <a href="{{ route('beranda') }}#cara-belanja">Cara Belanja</a>
+                        <li class="{{ request()->routeIs('cara-belanja') ? 'active' : '' }}">
+                            <a href="{{ route('cara-belanja') }}">Cara Belanja</a>
                         </li>
-                        <li>
-                            <a href="{{ route('beranda') }}#tentang-kami">Tentang Kami</a>
+                        <li class="{{ request()->routeIs('tentang-kami') ? 'active' : '' }}">
+                            <a href="{{ route('tentang-kami') }}">Tentang Kami</a>
                         </li>
                     </ul>
                 </nav>
