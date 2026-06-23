@@ -42,8 +42,10 @@ class Transaksi extends Model
 
     public static function buatNomorInvoice(): string
     {
+        $nextId = (static::max('id') ?? 0) + 1;
         do {
-            $invoice = 'INV-' . strtoupper(Str::random(4)) . '-' . date('Ymd');
+            $invoice = 'INV-' . sprintf('%03d', $nextId) . '-' . date('d-m-Y');
+            $nextId++;
         } while (static::where('nomor_invoice', $invoice)->exists());
 
         return $invoice;

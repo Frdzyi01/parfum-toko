@@ -352,15 +352,6 @@
                                                 <a href="{{ route('produk.tampilkan', $item->produk->slug) }}" class="cart-product-name">
                                                     {{ $item->produk->nama }}
                                                 </a>
-                                                
-                                                @php
-                                                    // Determine size statically based on product name/ID to match the mockup
-                                                    $size = '100 ml';
-                                                    if (Str::contains(Str::lower($item->produk->nama), ['love spell', 'mini', 'jazz club'])) {
-                                                        $size = '50 ml';
-                                                    }
-                                                @endphp
-                                                <div class="cart-product-size">{{ $size }}</div>
                                             </div>
                                         </div>
                                     </td>
@@ -418,8 +409,7 @@
             <div class="col-lg-4">
                 @php
                     $subtotal = $keranjang->ambilTotal();
-                    $shipping = 15000; // Static Shipping cost (Ongkir Rp 15.000)
-                    $total = $subtotal + $shipping;
+                    $total = $subtotal;
                 @endphp
                 
                 <div class="summary-card">
@@ -428,11 +418,6 @@
                     <div class="summary-row">
                         <span>Subtotal</span>
                         <strong>Rp {{ number_format($subtotal, 0, ',', '.') }}</strong>
-                    </div>
-                    
-                    <div class="summary-row">
-                        <span>Ongkir</span>
-                        <strong>Rp {{ number_format($shipping, 0, ',', '.') }}</strong>
                     </div>
                     
                     <div class="summary-row summary-row-bold">

@@ -72,20 +72,7 @@
                     <form action="{{ route('keranjang.tambah', $produk->id) }}" method="POST" id="order-form">
                         @csrf
                         
-                        <!-- Row 1: Dropdown Ukuran -->
-                        <div style="margin-bottom: 28px; max-width: 280px;">
-                            <label for="size-select" style="display: block; font-size: 0.9rem; font-weight: 700; color: #1e293b; margin-bottom: 8px;">Ukuran</label>
-                            <div style="position: relative;">
-                                <select id="size-select" name="ukuran" style="width: 100%; padding: 12px 16px; font-size: 0.95rem; color: #1e293b; background-color: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 12px; appearance: none; outline: none; cursor: pointer; font-family: inherit; font-weight: 500; transition: border-color 0.2s;">
-                                    <option value="100ml">100 ml</option>
-                                    <option value="50ml">50 ml</option>
-                                    <option value="30ml">30 ml</option>
-                                </select>
-                                <span style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #64748b;">
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </span>
-                            </div>
-                        </div>
+
                         
                         <!-- Row 2: Jumlah & Action Buttons (Side by Side) -->
                         <div class="row align-items-end">

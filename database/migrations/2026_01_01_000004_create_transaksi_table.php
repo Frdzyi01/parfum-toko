@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('transaksi', function (Blueprint $table) {
             $table->id();
             $table->foreignId('pengguna_id')->constrained('pengguna')->onDelete('cascade');
-            $table->string('nomor_invoice')->unique();
+            $table->string('nomor_invoice', 20)->unique();
             $table->decimal('total', 12, 2)->default(0);
             $table->enum('status', ['pending', 'processing', 'completed', 'cancelled'])->default('pending');
             $table->text('catatan')->nullable();
